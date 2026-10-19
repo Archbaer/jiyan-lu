@@ -1,3 +1,6 @@
 *.md
 !README.md
 .remember
+node_modules/
+dist/
+.DS_Store
