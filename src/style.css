@@ -258,7 +258,7 @@ footer a:hover{text-decoration:underline}
 
 /* Route starts at the globe; hero holds the only checkpoint navigation. */
 .hero{min-height:clamp(690px,82svh,960px);overflow:hidden;background:radial-gradient(circle at 50% 38%,#f8f6e9 0 20%,transparent 60%),radial-gradient(ellipse 18% 6% at 13% 24%,#fffdfa 0 70%,transparent 72%),radial-gradient(ellipse 16% 5% at 89% 31%,#fffdfa 0 70%,transparent 72%),linear-gradient(180deg,#e5f2ec 0%,#dceeea 100%)}
-.hero::before{z-index:0;opacity:.26;background-size:56px 56px}
+.hero::before{z-index:0;opacity:.26;background-size:56px 56px;mask-image:linear-gradient(to bottom,#000 0 65%,transparent 100%)}
 .hero-road{position:absolute;z-index:1;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 .hero-world{z-index:3;width:min(760px,63vw,calc(100svh - 70px))}
 .hero h1{top:2%;left:0;width:100%;height:28%;transform:none;line-height:1}

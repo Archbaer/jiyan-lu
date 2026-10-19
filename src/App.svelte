@@ -66,8 +66,9 @@
     const startY = worldRect.top - heroRect.top + worldRect.height * 0.76;
     const endX = roadRect.left - heroRect.left + roadRect.width * 170 / 360;
     const endY = heroRect.height;
+    const stageSlope = ((170 - 188) * roadRect.width / 360) / (100 * roadRect.height / 5000);
     connectorViewBox = `0 0 ${heroRect.width} ${heroRect.height}`;
-    connectorPath = `M ${startX} ${startY} C ${startX - 30} ${startY + 115}, ${endX + 45} ${endY - 170}, ${endX} ${endY} L ${endX - 16} ${endY + 90}`;
+    connectorPath = `M ${startX} ${startY} C ${startX - 30} ${startY + 115}, ${endX - stageSlope * 170} ${endY - 170}, ${endX} ${endY} L ${endX + stageSlope * 90} ${endY + 90}`;
     connectorOuter = roadRect.width * 126 / 360;
     connectorInner = roadRect.width * 108 / 360;
   }
