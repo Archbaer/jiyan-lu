@@ -137,6 +137,8 @@
 
 <main id="main-content">
   <section class="hero" id="home" aria-labelledby="hero-title">
+    <div class="hero-cloud hero-cloud-left" aria-hidden="true"></div>
+    <div class="hero-cloud hero-cloud-right" aria-hidden="true"></div>
     <svg class="hero-road" viewBox={connectorViewBox} preserveAspectRatio="none" aria-hidden="true">
       <path d={connectorPath} fill="none" stroke="#d5e0dc" stroke-width={connectorOuter} />
       <path d={connectorPath} fill="none" stroke="#788d90" stroke-width={connectorInner} />
@@ -144,7 +146,7 @@
     </svg>
     <nav class="checkpoint-nav" aria-label="Journey checkpoints">
       <span class="checkpoint-caption">Journey stops</span>
-      <ol>{#each checkpoints as stop, index}<li><a href={'#' + stop.id} aria-current={active === stop.id ? 'location' : undefined}><span class="checkpoint-number">0{index + 1}</span><span>{stop.label}</span></a></li>{/each}</ol>
+      <ol>{#each checkpoints as stop, index}<li class:next-stop={active === 'home' && index === 0} class:current-stop={active === stop.id}><a href={'#' + stop.id} aria-current={active === stop.id ? 'location' : undefined}><span class="checkpoint-number">0{index + 1}</span><span>{stop.label}</span></a></li>{/each}</ol>
     </nav>
     <div class="hero-world">
       <h1 id="hero-title" aria-label="Livia’s Journey"><svg viewBox="0 0 900 250" aria-hidden="true"><defs><path id="title-arc" d="M 40 215 C 240 35 660 35 860 215" /></defs><text><textPath href="#title-arc" startOffset="50%" text-anchor="middle">Livia’s Journey</textPath></text></svg></h1>
@@ -165,7 +167,7 @@
   <section class="story-section education" id="education" aria-labelledby="education-title">
     <div class="roadside-sign" aria-hidden="true"><span>Education</span></div>
     <div class="stage-content">
-      <header class="section-heading reveal"><h2 id="education-title">Education</h2><p>Qualifications, specialist study, and experiences that shaped the way Livia approaches complex work.</p></header>
+      <header class="section-heading reveal"><svg class="chapter-motif" viewBox="0 0 32 32" aria-hidden="true"><path d="M11 27V9l5-5 5 5v18M8 27h16M12 13h8M16 15v5m-4 3h8" /></svg><h2 id="education-title">Education</h2><p>Qualifications, specialist study, and experiences that shaped the way Livia approaches complex work.</p></header>
     </div>
     <div class="journey-list">
       {#each studies as study, index}
@@ -180,7 +182,7 @@
   <section class="story-section work" id="work" aria-labelledby="work-title">
     <div class="roadside-sign" aria-hidden="true"><span>Experience</span></div>
     <div class="stage-content">
-      <header class="section-heading reveal"><h2 id="work-title">Work experience</h2><p>A concise record of responsibilities, results, and the judgement developed along the way.</p></header>
+      <header class="section-heading reveal"><svg class="chapter-motif" viewBox="0 0 32 32" aria-hidden="true"><path d="M3 25h26M6 25V8m20 17V8M6 10c6 10 14 10 20 0M10 15v10m6-6v6m6-10v10" /></svg><h2 id="work-title">Work experience</h2><p>A concise record of responsibilities, results, and the judgement developed along the way.</p></header>
     </div>
     <div class="journey-list">
       {#each roles as role, index}
@@ -196,7 +198,7 @@
   <section class="story-section skills" id="skills" aria-labelledby="skills-title">
     <div class="roadside-sign" aria-hidden="true"><span>Strengths</span></div>
     <div class="stage-content">
-      <header class="section-heading reveal"><h2 id="skills-title">Skills & strengths</h2><p>Professional strengths are most useful when backed by real examples. These are suggested categories to tailor.</p></header>
+      <header class="section-heading reveal"><svg class="chapter-motif" viewBox="0 0 32 32" aria-hidden="true"><path d="M27 5C11 5 5 11 5 19c0 5 3 8 8 8 8 0 14-7 14-22ZM7 25c4-6 10-10 18-14" /></svg><h2 id="skills-title">Skills & strengths</h2><p>Professional strengths are most useful when backed by real examples. These are suggested categories to tailor.</p></header>
       <div class="strength-grid">
         {#each strengths as strength}
           <article class="strength-card paper-card reveal"><span>{strength.number}</span><h3>{strength.title}</h3><p>{strength.detail}</p></article>
@@ -208,7 +210,7 @@
   <section class="story-section interests" id="interests" aria-labelledby="interests-title">
     <div class="roadside-sign" aria-hidden="true"><span>Beyond work</span></div>
     <div class="stage-content">
-      <header class="section-heading reveal"><h2 id="interests-title">Beyond work</h2><p>A considered glimpse of the person behind the professional profile.</p></header>
+      <header class="section-heading reveal"><svg class="chapter-motif" viewBox="0 0 32 32" aria-hidden="true"><path d="m16 3 3.6 9.4L29 16l-9.4 3.6L16 29l-3.6-9.4L3 16l9.4-3.6L16 3Z" /></svg><h2 id="interests-title">Beyond work</h2><p>A considered glimpse of the person behind the professional profile.</p></header>
       <div class="interests-grid">
         <figure class="photo-slot interest-photo reveal"><div class="photo-window">{#if photos.interests[0]}<img src={photos.interests[0]} alt="Livia outside work" />{:else}<span class="photo-plus" aria-hidden="true">+</span><span>LIVIA PHOTO</span>{/if}</div><figcaption>Replace with a favourite personal photo.</figcaption></figure>
         <div class="interests-copy paper-card reveal"><span class="card-kicker">PERSONAL INTERESTS · SAMPLE CONTENT</span><h3>Curiosity beyond the numbers.</h3><p>Add a few meaningful interests: a place, a hobby, a cause, or a project that says something about Livia.</p><div class="interest-tags"><span>Interest one</span><span>Interest two</span><span>Interest three</span></div></div>
@@ -220,7 +222,7 @@
     <div class="roadside-sign" aria-hidden="true"><span>Contact</span></div>
     <div class="mailbox-scene" aria-hidden="true"><div class="mailbox"><span>MAIL</span><i></i></div><div class="mailbox-post"></div><img class="mailbox-dog" src="/assets/contact-dog-posting.png" alt="" /></div>
     <div class="stage-content contact-grid">
-      <div class="contact-intro reveal"><h2 id="contact-title">Let’s connect.</h2><p>For opportunities, professional conversations, or a thoughtful introduction.</p><div class="contact-rule"></div><span class="contact-small">A good working relationship starts with a clear conversation.</span></div>
+      <div class="contact-intro reveal"><svg class="chapter-motif" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 8h24v17H4zM4 9l12 9L28 9" /></svg><h2 id="contact-title">Let’s connect.</h2><p>For opportunities, professional conversations, or a thoughtful introduction.</p><div class="contact-rule"></div><span class="contact-small">A good working relationship starts with a clear conversation.</span></div>
       <form class="contact-form paper-card reveal" on:submit={previewContact}><div class="letter-heading"><div><span>TO LIVIA · PERSONAL POST</span><strong>Leave a note</strong></div><span aria-hidden="true">✉</span></div><label><span>Name</span><input type="text" name="name" placeholder="Your name" required autocomplete="name" /></label><label><span>Email</span><input type="email" name="email" placeholder="Your email" required autocomplete="email" /></label><label><span>Message</span><textarea name="message" placeholder="How can I help?" rows="4" required></textarea></label><button type="submit">Post message <span aria-hidden="true">↗</span></button>{#if formNotice}<p class="form-notice" role="status">{formNotice}</p>{/if}<p class="form-helper">Preview form. Connect a real inbox before public launch.</p></form>
     </div>
   </section>
