@@ -28,7 +28,7 @@ main{position:relative;overflow:hidden}
 .journey-walker.walking .dog-sprite{animation-play-state:running}
 @keyframes dog-walk{0%,100%{background-position:0 0}25%{background-position:33.333% 0}50%{background-position:66.666% 0}75%{background-position:100% 0}}
 
-.eyebrow,.card-kicker{color:#66808a;font-size:10px;font-weight:700;letter-spacing:.19em;text-transform:uppercase}
+.card-kicker{color:#66808a;font-size:10px;font-weight:700;letter-spacing:.19em;text-transform:uppercase}
 .status-dot{display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:#77a8a6;vertical-align:1px;box-shadow:0 0 0 4px #e1efed}
 .hero{position:relative;z-index:1;min-height:100svh;padding:112px clamp(24px,5vw,76px) 70px;background:linear-gradient(180deg,#fffcf6 0%,#f2f8f5 100%);scroll-margin-top:76px}
 .hero-inner{position:relative;z-index:4;max-width:1400px;margin:auto}
@@ -146,8 +146,8 @@ footer a:hover{text-decoration:underline}
 @keyframes hero-bob{to{transform:translate(-50%,-72%) translateY(-5px)}}
 .hero-orbit-dog .dog-sprite{animation-duration:.65s}
 
-.journey-stages{--rail:400px;position:relative;background:#f6f9f6}
-.journey-road{position:absolute;z-index:1;top:0;bottom:0;left:0;width:var(--rail);height:100%;pointer-events:none}
+.journey-stages{--rail:400px;position:relative;background:#dceeea}
+.journey-road{position:absolute;z-index:1;top:-2px;bottom:0;left:0;width:var(--rail);height:calc(100% + 2px);pointer-events:none}
 .road-walker{position:absolute;z-index:6;width:65px;aspect-ratio:2172/2896;transform:translate(-50%,-67%);pointer-events:none}
 .road-walker .dog-sprite{animation-play-state:paused;filter:drop-shadow(0 5px 2px #173d5155)}
 .road-walker.walking .dog-sprite{animation-play-state:running}
@@ -184,7 +184,7 @@ footer a:hover{text-decoration:underline}
 .interests-copy h3{font-family:'Caveat',cursive;font-size:clamp(38px,4vw,58px);font-weight:700}
 
 .journey-stages .contact{min-height:750px}
-.contact::before{content:'';position:absolute;z-index:2;inset:0;background:linear-gradient(to bottom,transparent 0,transparent 150px,#f6f9f6 390px)}
+.contact::before{content:'';position:absolute;z-index:2;inset:0;background:linear-gradient(to bottom,transparent 0,transparent 150px,#dceeea 390px)}
 .mailbox-scene{position:absolute;z-index:4;top:190px;left:5px;width:360px;height:390px}
 .mailbox{position:absolute;top:90px;left:160px;width:155px;height:165px;border:8px solid #224f68;border-radius:75px 75px 13px 13px;background:#36728f;box-shadow:inset 10px 0 #ffffff24,12px 12px 0 #20465d22}
 .mailbox::before{content:'';position:absolute;top:31px;left:18px;width:100px;height:13px;border:4px solid #183d52;border-radius:5px;background:#dce6db}
@@ -257,9 +257,8 @@ footer a:hover{text-decoration:underline}
 }
 
 /* Route starts at the globe; hero holds the only checkpoint navigation. */
-.hero{min-height:clamp(690px,82svh,960px);overflow:hidden;background:radial-gradient(circle at 50% 52%,#f9f7e9 0 21%,transparent 58%),radial-gradient(ellipse 18% 6% at 13% 24%,#fffdfa 0 70%,transparent 72%),radial-gradient(ellipse 16% 5% at 89% 31%,#fffdfa 0 70%,transparent 72%),linear-gradient(160deg,#fff8ea 0%,#e9f4ed 66%,#dceeea 100%)}
+.hero{min-height:clamp(690px,82svh,960px);overflow:hidden;background:radial-gradient(circle at 50% 38%,#f8f6e9 0 20%,transparent 60%),radial-gradient(ellipse 18% 6% at 13% 24%,#fffdfa 0 70%,transparent 72%),radial-gradient(ellipse 16% 5% at 89% 31%,#fffdfa 0 70%,transparent 72%),linear-gradient(180deg,#e5f2ec 0%,#dceeea 100%)}
 .hero::before{z-index:0;opacity:.26;background-size:56px 56px}
-.hero::after{content:'';position:absolute;z-index:0;top:10%;left:50%;width:min(780px,70vw);aspect-ratio:1;transform:translateX(-50%);border:2px dashed #9ac1b75c;border-radius:50%;pointer-events:none}
 .hero-road{position:absolute;z-index:1;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 .hero-world{z-index:3;width:min(760px,63vw,calc(100svh - 70px))}
 .hero h1{top:2%;left:0;width:100%;height:28%;transform:none;line-height:1}
@@ -272,7 +271,11 @@ footer a:hover{text-decoration:underline}
 .checkpoint-nav li{position:relative;padding-left:30px}
 .checkpoint-nav li::before{content:'';position:absolute;z-index:1;top:50%;left:8px;width:15px;height:15px;transform:translateY(-50%);border:3px solid #f8f5e9;border-radius:50%;background:#8ea6a0;box-shadow:0 1px 3px #3658614a}
 .checkpoint-nav a{display:flex;align-items:center;gap:10px;width:fit-content;min-width:151px;min-height:39px;padding:5px 18px 5px 11px;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,0 100%);background:#fff8e9ed;box-shadow:0 6px 12px #657a7733;color:#23475b;font-family:'Caveat',cursive;font-size:21px;font-weight:700;line-height:1;text-decoration:none;transition:transform .18s ease,background .18s ease}
-.checkpoint-nav li:nth-child(even) a{background:#dce9d9}
+.checkpoint-nav li:nth-child(odd) a{transform:rotate(-2deg)}
+.checkpoint-nav li:nth-child(even) a{transform:rotate(2deg);background:#b9d8c8}
+.checkpoint-nav li:nth-child(3) a{background:#c9e1e4}
+.checkpoint-nav li:nth-child(5) a{background:#f0cf9c}
+.checkpoint-nav a[aria-current]{background:#f4ddb0;filter:drop-shadow(0 3px 3px #4b6b6a55)}
 .checkpoint-nav a:hover,.checkpoint-nav a:focus-visible{transform:translateX(5px);background:#f4ddb0}
 .checkpoint-number{color:#809d9a;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:.06em}
 .hero-socials{position:absolute;z-index:5;top:34%;right:clamp(25px,4vw,70px);width:205px}
@@ -287,11 +290,14 @@ footer a:hover{text-decoration:underline}
 .journey-stages .story-section.skills{--section-accent:#9dbb9d}
 .journey-stages .story-section.interests{--section-accent:#d9b292}
 .journey-stages .story-section.contact{--section-accent:#93b7b8}
-.section-heading{position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(230px,.9fr);column-gap:28px;align-items:center;min-height:165px;padding:23px 36px 26px;border:1px solid #e4e0d2;border-bottom:5px solid var(--section-accent);border-radius:23px 23px 8px 8px;background:linear-gradient(105deg,#fffdf7 0%,#fffdf7 72%,#f0f5ee 100%);box-shadow:0 14px 30px #34596612}
-.section-heading::before{content:'';position:absolute;top:18px;right:18px;width:58px;height:58px;border:2px dashed var(--section-accent);border-radius:50%;opacity:.58;pointer-events:none}
-.section-heading .eyebrow{grid-column:1;grid-row:1;color:#72948e}
-.section-heading h2{grid-column:1;grid-row:2;margin:3px 0 0;white-space:nowrap}
-.section-heading p{grid-column:2;grid-row:1/3;align-self:end;max-width:450px;padding:0 48px 8px 22px;border-left:2px solid #d6dfd5;font-size:14px;line-height:1.55}
+.section-heading{position:relative;display:block;min-height:0;padding:24px 34px 27px;border:1px solid #e4e0d2;border-bottom:5px solid var(--section-accent);border-radius:23px 23px 8px 8px;background:#fffdf7;box-shadow:0 14px 30px #34596612}
+.section-heading h2{margin:0 0 9px;font-size:clamp(60px,5.3vw,82px);line-height:.93;white-space:normal}
+.section-heading p{max-width:680px;margin:0;padding:0;border:0;font-size:14px;line-height:1.55}
+.roadside-sign{position:absolute;z-index:5;top:100px;left:calc(var(--rail) - 150px);width:132px;height:145px;pointer-events:none;filter:drop-shadow(0 7px 6px #36514d38)}
+.roadside-sign::before{content:'';position:absolute;top:28px;left:19px;width:12px;height:117px;border:2px solid #806346;border-radius:3px;background:#a87f54}
+.roadside-sign::after{content:'';position:absolute;top:135px;left:1px;width:48px;height:9px;border-radius:50%;background:#88a78e80}
+.roadside-sign span{position:relative;display:grid;place-items:center;width:100%;min-height:44px;padding:6px 13px 7px 6px;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,0 100%);background:#ebc18a;color:#224b58;font-family:'Caveat',cursive;font-size:23px;font-weight:700;line-height:1;text-align:center}
+.work .roadside-sign span{background:#bdd7d8}.skills .roadside-sign span{background:#c5dcb9}.interests .roadside-sign span{background:#edc6aa}.contact .roadside-sign span{background:#bfdcda}
 .journey-list{margin-top:35px}
 .journey-stages .contact{padding-top:80px}
 footer{justify-content:center;padding:27px}
@@ -302,12 +308,10 @@ footer a{font-size:12px;font-weight:700;letter-spacing:.04em}
   .checkpoint-nav{left:20px;width:180px}
   .checkpoint-nav a{min-width:143px;font-size:19px}
   .hero-socials{right:20px;width:170px}
-  .section-heading{grid-template-columns:1fr;gap:4px}
-  .section-heading p{grid-column:1;grid-row:3;align-self:auto;max-width:none;margin-top:8px;padding:0;border:0}
+  .section-heading p{max-width:none}
 }
 @media(max-width:700px){
   .hero{display:block;min-height:max(700px,calc(min(100vw - 20px,680px) + 270px))}
-  .hero::after{top:62px;width:min(calc(100vw - 10px),690px)}
   .hero-world{position:absolute;top:70px;left:50%;width:min(calc(100vw - 20px),680px);transform:translateX(-50%)}
   .hero h1{top:1%}
   .checkpoint-nav{top:auto;bottom:20px;left:16px;width:calc(100% - 32px)}
@@ -322,14 +326,16 @@ footer a{font-size:12px;font-weight:700;letter-spacing:.04em}
   .social-placeholder{padding:8px 10px}
   .social-placeholder strong{width:24px;height:24px;font-size:15px}
   .social-placeholder small{font-size:8px}
-  .section-heading{grid-template-columns:minmax(0,1fr);min-width:0;min-height:0;padding:20px 18px 21px;border-radius:17px 17px 6px 6px}
-  .section-heading::before{width:35px;height:35px;top:15px;right:15px}
-  .section-heading h2{white-space:normal}
+  .section-heading{min-width:0;padding:20px 18px 21px;border-radius:17px 17px 6px 6px}
   .section-heading p{font-size:12px}
 }
 @media(max-width:560px){
   .journey-stages{--rail:clamp(112px,33vw,150px)}
   .section-heading h2{min-width:0;font-size:clamp(35px,9vw,48px);overflow-wrap:anywhere}
+  .roadside-sign{top:88px;left:5px;width:calc(var(--rail) - 12px);filter:drop-shadow(0 4px 4px #36514d38)}
+  .roadside-sign span{min-height:33px;padding:4px 10px 5px 3px;font-size:clamp(16px,5vw,20px)}
+  .roadside-sign::before{top:24px;left:14px;width:8px;height:88px}
+  .roadside-sign::after{top:105px;left:0;width:34px}
 }
 @media(max-width:390px){
   .checkpoint-nav a{font-size:15px}

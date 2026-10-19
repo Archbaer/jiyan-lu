@@ -67,7 +67,7 @@
     const endX = roadRect.left - heroRect.left + roadRect.width * 170 / 360;
     const endY = heroRect.height;
     connectorViewBox = `0 0 ${heroRect.width} ${heroRect.height}`;
-    connectorPath = `M ${startX} ${startY} C ${startX - 30} ${startY + 115}, ${endX + 45} ${endY - 170}, ${endX} ${endY}`;
+    connectorPath = `M ${startX} ${startY} C ${startX - 30} ${startY + 115}, ${endX + 45} ${endY - 170}, ${endX} ${endY} L ${endX - 16} ${endY + 90}`;
     connectorOuter = roadRect.width * 126 / 360;
     connectorInner = roadRect.width * 108 / 360;
   }
@@ -155,15 +155,16 @@
 
   <div class="journey-stages">
     <svg class="journey-road" viewBox="0 0 360 5000" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M170 0 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#d5e0dc" stroke-width="126" />
-      <path d="M170 0 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#788d90" stroke-width="108" />
-      <path d="M170 0 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#f6efcf" stroke-width="3" stroke-dasharray="24 26" />
+      <path d="M188 -100 L170 0 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#d5e0dc" stroke-width="126" />
+      <path d="M188 -100 L170 0 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#788d90" stroke-width="108" />
+      <path d="M188 -100 L170 0 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#f6efcf" stroke-width="3" stroke-dasharray="24 26" />
     </svg>
     <div class="road-walker" class:walking class:at-contact={active === 'contact'} style={'left:' + walkerX + 'px;top:' + walkerY + 'px'} aria-hidden="true"><div class="dog-sprite"></div></div>
 
   <section class="story-section education" id="education" aria-labelledby="education-title">
+    <div class="roadside-sign" aria-hidden="true"><span>Education</span></div>
     <div class="stage-content">
-      <header class="section-heading reveal"><span class="eyebrow">FOUNDATIONS</span><h2 id="education-title">Education</h2><p>Qualifications, specialist study, and experiences that shaped the way Livia approaches complex work.</p></header>
+      <header class="section-heading reveal"><h2 id="education-title">Education</h2><p>Qualifications, specialist study, and experiences that shaped the way Livia approaches complex work.</p></header>
     </div>
     <div class="journey-list">
       {#each studies as study, index}
@@ -176,8 +177,9 @@
   </section>
 
   <section class="story-section work" id="work" aria-labelledby="work-title">
+    <div class="roadside-sign" aria-hidden="true"><span>Experience</span></div>
     <div class="stage-content">
-      <header class="section-heading reveal"><span class="eyebrow">PROFESSIONAL EXPERIENCE</span><h2 id="work-title">Work experience</h2><p>A concise record of responsibilities, results, and the judgement developed along the way.</p></header>
+      <header class="section-heading reveal"><h2 id="work-title">Work experience</h2><p>A concise record of responsibilities, results, and the judgement developed along the way.</p></header>
     </div>
     <div class="journey-list">
       {#each roles as role, index}
@@ -191,8 +193,9 @@
   </section>
 
   <section class="story-section skills" id="skills" aria-labelledby="skills-title">
+    <div class="roadside-sign" aria-hidden="true"><span>Strengths</span></div>
     <div class="stage-content">
-      <header class="section-heading reveal"><span class="eyebrow">WORKING STYLE</span><h2 id="skills-title">Skills & strengths</h2><p>Professional strengths are most useful when backed by real examples. These are suggested categories to tailor.</p></header>
+      <header class="section-heading reveal"><h2 id="skills-title">Skills & strengths</h2><p>Professional strengths are most useful when backed by real examples. These are suggested categories to tailor.</p></header>
       <div class="strength-grid">
         {#each strengths as strength}
           <article class="strength-card paper-card reveal"><span>{strength.number}</span><h3>{strength.title}</h3><p>{strength.detail}</p></article>
@@ -202,8 +205,9 @@
   </section>
 
   <section class="story-section interests" id="interests" aria-labelledby="interests-title">
+    <div class="roadside-sign" aria-hidden="true"><span>Beyond work</span></div>
     <div class="stage-content">
-      <header class="section-heading reveal"><span class="eyebrow">BEYOND THE DESK</span><h2 id="interests-title">Beyond work</h2><p>A considered glimpse of the person behind the professional profile.</p></header>
+      <header class="section-heading reveal"><h2 id="interests-title">Beyond work</h2><p>A considered glimpse of the person behind the professional profile.</p></header>
       <div class="interests-grid">
         <figure class="photo-slot interest-photo reveal"><div class="photo-window">{#if photos.interests[0]}<img src={photos.interests[0]} alt="Livia outside work" />{:else}<span class="photo-plus" aria-hidden="true">+</span><span>LIVIA PHOTO</span>{/if}</div><figcaption>Replace with a favourite personal photo.</figcaption></figure>
         <div class="interests-copy paper-card reveal"><span class="card-kicker">PERSONAL INTERESTS · SAMPLE CONTENT</span><h3>Curiosity beyond the numbers.</h3><p>Add a few meaningful interests: a place, a hobby, a cause, or a project that says something about Livia.</p><div class="interest-tags"><span>Interest one</span><span>Interest two</span><span>Interest three</span></div></div>
@@ -212,9 +216,10 @@
   </section>
 
   <section class="story-section contact" id="contact" aria-labelledby="contact-title">
+    <div class="roadside-sign" aria-hidden="true"><span>Contact</span></div>
     <div class="mailbox-scene" aria-hidden="true"><div class="mailbox"><span>MAIL</span><i></i></div><div class="mailbox-post"></div><img class="mailbox-dog" src="/assets/contact-dog-posting.png" alt="" /></div>
     <div class="stage-content contact-grid">
-      <div class="contact-intro reveal"><span class="eyebrow">NEXT CONVERSATION</span><h2 id="contact-title">Let’s connect.</h2><p>For opportunities, professional conversations, or a thoughtful introduction.</p><div class="contact-rule"></div><span class="contact-small">A good working relationship starts with a clear conversation.</span></div>
+      <div class="contact-intro reveal"><h2 id="contact-title">Let’s connect.</h2><p>For opportunities, professional conversations, or a thoughtful introduction.</p><div class="contact-rule"></div><span class="contact-small">A good working relationship starts with a clear conversation.</span></div>
       <form class="contact-form paper-card reveal" on:submit={previewContact}><div class="letter-heading"><div><span>TO LIVIA · PERSONAL POST</span><strong>Leave a note</strong></div><span aria-hidden="true">✉</span></div><label><span>Name</span><input type="text" name="name" placeholder="Your name" required autocomplete="name" /></label><label><span>Email</span><input type="email" name="email" placeholder="Your email" required autocomplete="email" /></label><label><span>Message</span><textarea name="message" placeholder="How can I help?" rows="4" required></textarea></label><button type="submit">Post message <span aria-hidden="true">↗</span></button>{#if formNotice}<p class="form-notice" role="status">{formNotice}</p>{/if}<p class="form-helper">Preview form. Connect a real inbox before public launch.</p></form>
     </div>
   </section>
