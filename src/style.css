@@ -148,6 +148,7 @@ footer a:hover{text-decoration:underline}
 
 .journey-stages{--rail:400px;position:relative;background:var(--mint)}
 .journey-road{position:absolute;z-index:1;top:-2px;bottom:0;left:0;width:var(--rail);height:calc(100% + 2px);pointer-events:none}
+.road-start{position:absolute;z-index:5;top:calc(2.36% - 34px);left:calc(var(--rail)*170/360);display:grid;place-items:center;width:68px;height:68px;transform:translateX(-50%);border:5px solid var(--ivory);border-radius:50%;background:var(--gold);box-shadow:0 6px 14px #36514d55;color:var(--navy);font-size:11px;font-weight:800;letter-spacing:.08em}
 .road-walker{position:absolute;z-index:6;width:65px;aspect-ratio:2172/2896;transform:translate(-50%,-67%);pointer-events:none}
 .road-walker .dog-sprite{animation-play-state:paused;filter:drop-shadow(0 5px 2px #173d5155)}
 .road-walker.walking .dog-sprite{animation-play-state:running}
@@ -257,14 +258,13 @@ footer a:hover{text-decoration:underline}
   .letter-heading>span{width:36px;height:36px;font-size:18px}
 }
 
-/* Route starts at the globe; hero holds the only checkpoint navigation. */
+/* The hero holds the checkpoint navigation; the road begins at Education. */
 .hero{min-height:clamp(690px,82svh,960px);overflow:hidden;background:radial-gradient(circle at 50% 38%,#f8f6e9 0 20%,transparent 60%),linear-gradient(180deg,#e5f2ec 0%,var(--mint) 100%)}
 .hero::before{z-index:0;opacity:.26;background-size:56px 56px;mask-image:linear-gradient(to bottom,#000 0 65%,transparent 100%)}
 .hero-cloud{position:absolute;z-index:0;width:clamp(220px,24vw,400px);height:clamp(58px,8vw,116px);border-radius:50%;background:#fffdfaaf;filter:blur(2px);pointer-events:none;animation:cloud-drift 22s ease-in-out infinite alternate}
 .hero-cloud-left{top:22%;left:-3%}
 .hero-cloud-right{top:30%;right:-4%;width:clamp(190px,21vw,350px);animation-delay:-11s;animation-direction:alternate-reverse}
 @keyframes cloud-drift{from{transform:translateX(-12px)}to{transform:translateX(20px)}}
-.hero-road{position:absolute;z-index:1;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 .hero-world{z-index:3;width:min(760px,63vw,calc(100svh - 70px))}
 .hero h1{top:2%;left:0;width:100%;height:28%;transform:none;line-height:1}
 .hero h1 svg{display:block;width:100%;height:100%;overflow:visible;fill:#123e5c;filter:drop-shadow(0 4px 0 #f9f9e8) drop-shadow(0 6px 10px #f9f9e8)}
@@ -339,6 +339,7 @@ footer a{font-size:12px;font-weight:700;letter-spacing:.04em}
 }
 @media(max-width:560px){
   .journey-stages{--rail:clamp(112px,33vw,150px)}
+  .road-start{left:calc(var(--rail)*170/360 - 28px);width:58px;height:58px;top:calc(2.36% - 29px);font-size:9px}
   .section-heading h2{min-width:0;font-size:clamp(35px,9vw,48px);overflow-wrap:anywhere}
   .roadside-sign{top:88px;left:5px;width:calc(var(--rail) - 12px);filter:drop-shadow(0 4px 4px #36514d38)}
   .roadside-sign span{min-height:33px;padding:4px 10px 5px 3px;font-size:clamp(16px,5vw,20px)}

@@ -32,10 +32,6 @@
   ];
 
   let active = 'home';
-  let connectorPath = '';
-  let connectorViewBox = '0 0 1 1';
-  let connectorOuter = 126;
-  let connectorInner = 108;
   let walkerX = 170;
   let walkerY = 0;
   let walking = false;
@@ -47,35 +43,11 @@
     const stages = document.querySelector('.journey-stages');
     if (!stages) return;
     const start = stages.getBoundingClientRect().top + window.scrollY;
-    walkerY = Math.max(120, Math.min(stages.offsetHeight - 150, window.scrollY + window.innerHeight * 0.52 - start));
+    walkerY = Math.max(220, Math.min(stages.offsetHeight - 150, window.scrollY + window.innerHeight * 0.52 - start));
     const road = stages.querySelector('.journey-road');
     const path = road.querySelector('path');
     const point = path.getPointAtLength(path.getTotalLength() * walkerY / stages.offsetHeight);
     walkerX = point.x * road.getBoundingClientRect().width / 360 + road.getBoundingClientRect().left - stages.getBoundingClientRect().left;
-  }
-
-  function updateConnector() {
-    const hero = document.querySelector('.hero');
-    const world = document.querySelector('.hero-world');
-    const road = document.querySelector('.journey-road');
-    if (!hero || !world || !road) return;
-    const heroRect = hero.getBoundingClientRect();
-    const worldRect = world.getBoundingClientRect();
-    const roadRect = road.getBoundingClientRect();
-    const startX = worldRect.left - heroRect.left + worldRect.width * 0.34;
-    const startY = worldRect.top - heroRect.top + worldRect.height * 0.76;
-    const endX = roadRect.left - heroRect.left + roadRect.width * 170 / 360;
-    const endY = heroRect.height;
-    const stageSlope = ((170 - 188) * roadRect.width / 360) / (100 * roadRect.height / 5000);
-    connectorViewBox = `0 0 ${heroRect.width} ${heroRect.height}`;
-    connectorPath = `M ${startX} ${startY} C ${startX - 30} ${startY + 115}, ${endX - stageSlope * 170} ${endY - 170}, ${endX} ${endY} L ${endX + stageSlope * 90} ${endY + 90}`;
-    connectorOuter = roadRect.width * 126 / 360;
-    connectorInner = roadRect.width * 108 / 360;
-  }
-
-  function updateLayout() {
-    updateWalker();
-    updateConnector();
   }
 
   function onScroll() {
@@ -114,13 +86,13 @@
     }, { threshold: 0.08 });
     document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
 
-    window.addEventListener('resize', updateLayout);
+    window.addEventListener('resize', updateWalker);
     window.addEventListener('scroll', onScroll, { passive: true });
-    updateLayout();
+    updateWalker();
     return () => {
       sectionObserver.disconnect();
       revealObserver.disconnect();
-      window.removeEventListener('resize', updateLayout);
+      window.removeEventListener('resize', updateWalker);
       window.removeEventListener('scroll', onScroll);
       cancelAnimationFrame(scrollFrame);
       clearTimeout(walkTimer);
@@ -139,11 +111,6 @@
   <section class="hero" id="home" aria-labelledby="hero-title">
     <div class="hero-cloud hero-cloud-left" aria-hidden="true"></div>
     <div class="hero-cloud hero-cloud-right" aria-hidden="true"></div>
-    <svg class="hero-road" viewBox={connectorViewBox} preserveAspectRatio="none" aria-hidden="true">
-      <path d={connectorPath} fill="none" stroke="#d5e0dc" stroke-width={connectorOuter} />
-      <path d={connectorPath} fill="none" stroke="#788d90" stroke-width={connectorInner} />
-      <path d={connectorPath} fill="none" stroke="#f6efcf" stroke-width="3" stroke-dasharray="24 26" />
-    </svg>
     <nav class="checkpoint-nav" aria-label="Journey checkpoints">
       <span class="checkpoint-caption">Journey stops</span>
       <ol>{#each checkpoints as stop, index}<li class:next-stop={active === 'home' && index === 0} class:current-stop={active === stop.id}><a href={'#' + stop.id} aria-current={active === stop.id ? 'location' : undefined}><span class="checkpoint-number">0{index + 1}</span><span>{stop.label}</span></a></li>{/each}</ol>
@@ -158,10 +125,11 @@
 
   <div class="journey-stages">
     <svg class="journey-road" viewBox="0 0 360 5000" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M188 -100 L170 0 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#d5e0dc" stroke-width="126" />
-      <path d="M188 -100 L170 0 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#788d90" stroke-width="108" />
-      <path d="M188 -100 L170 0 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#f6efcf" stroke-width="3" stroke-dasharray="24 26" />
+      <path d="M170 118 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#d5e0dc" stroke-width="126" stroke-linecap="round" />
+      <path d="M170 118 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#788d90" stroke-width="108" stroke-linecap="round" />
+      <path d="M170 118 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#f6efcf" stroke-width="3" stroke-dasharray="24 26" />
     </svg>
+    <div class="road-start"><span>START</span></div>
     <div class="road-walker" class:walking class:at-contact={active === 'contact'} style={'left:' + walkerX + 'px;top:' + walkerY + 'px'} aria-hidden="true"><div class="dog-sprite"></div></div>
 
   <section class="story-section education" id="education" aria-labelledby="education-title">
