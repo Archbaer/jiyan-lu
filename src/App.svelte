@@ -1,81 +1,43 @@
 <script>
   import { onMount } from 'svelte';
 
-  // Replace empty paths with Livia's photos. Each section supports three images.
-  const photos = {
-    education: ['', '', ''],
-    work: ['', '', ''],
-    interests: ['']
-  };
-  const placeLogos = { education: ['', '', ''], work: ['', '', ''] };
-  const roles = [
-    { date: '20XX — PRESENT', title: 'Tax audit role', organisation: 'Organisation name', detail: 'Add scope of work, key responsibilities, and one measurable outcome.' },
-    { date: '20XX — 20XX', title: 'Previous finance role', organisation: 'Organisation name', detail: 'Describe a project, process improvement, or client contribution.' },
-    { date: '20XX — 20XX', title: 'Early career experience', organisation: 'Organisation name', detail: 'Show how this experience built your technical foundation.' }
+  const stops = [
+    { id: 'home', label: 'Home', icon: '⌂' },
+    { id: 'education', label: 'Education', icon: '✦' },
+    { id: 'work', label: 'Work Experience', icon: '▣' },
+    { id: 'skills', label: 'Skills & Strengths', icon: '✿' },
+    { id: 'interests', label: 'Personal Interests', icon: '♡' },
+    { id: 'contact', label: 'Contact', icon: '✉' }
   ];
+  // Replace sample entries with approved CV details.
   const studies = [
-    { label: 'A', title: 'Degree or qualification', meta: 'Institution · 20XX–20XX', detail: 'Add subject, relevant modules, and one achievement that shows analytical depth.' },
-    { label: 'B', title: 'Specialist study', meta: 'Institution · 20XX', detail: 'Add tax, accounting, or audit training relevant to Livia’s professional path.' },
-    { label: 'C', title: 'Professional development', meta: 'Institution · 20XX', detail: 'Add certification, research, or ongoing learning with a practical outcome.' }
+    { date: '20XX – 20XX', title: 'Degree or qualification', place: 'Institution name', detail: 'Add subject, relevant study, and an achievement.' },
+    { date: '20XX', title: 'Specialist study', place: 'Institution name', detail: 'Add tax, accounting, or audit training.' },
+    { date: '20XX', title: 'Professional development', place: 'Institution name', detail: 'Add a certification or practical learning milestone.' }
+  ];
+  const roles = [
+    { date: '20XX – Present', title: 'Tax audit role', place: 'Organisation name', detail: 'Add responsibilities, a project, and one measurable outcome.' },
+    { date: '20XX – 20XX', title: 'Previous finance role', place: 'Organisation name', detail: 'Add a contribution or process improvement.' },
+    { date: '20XX – 20XX', title: 'Early career experience', place: 'Organisation name', detail: 'Add the experience that built your technical foundation.' }
   ];
   const strengths = [
-    { number: '01', title: 'Technical rigour', detail: 'Add audit methods, reporting standards, and tools you use with confidence.' },
-    { number: '02', title: 'Clear analysis', detail: 'Show how you turn detailed financial information into useful findings.' },
-    { number: '03', title: 'Trusted communication', detail: 'Describe how you work with teams and explain complex issues clearly.' }
-  ];
-  const checkpoints = [
-    { id: 'education', label: 'Education' },
-    { id: 'work', label: 'Experience' },
-    { id: 'skills', label: 'Strengths' },
-    { id: 'interests', label: 'Beyond work' },
-    { id: 'contact', label: 'Contact' }
+    { number: '01', title: 'Technical rigour', detail: 'Add audit methods, reporting standards, and tools.' },
+    { number: '02', title: 'Clear analysis', detail: 'Show how you turn detail into useful findings.' },
+    { number: '03', title: 'Trusted communication', detail: 'Show how you work with teams and explain complex work.' }
   ];
 
-  let active = 'home';
-  let walkerX = 170;
-  let walkerY = 0;
-  let walking = false;
-  let formNotice = '';
-  let walkTimer;
-  let scrollFrame;
-
-  function updateWalker() {
-    const stages = document.querySelector('.journey-stages');
-    if (!stages) return;
-    const start = stages.getBoundingClientRect().top + window.scrollY;
-    walkerY = Math.max(220, Math.min(stages.offsetHeight - 150, window.scrollY + window.innerHeight * 0.52 - start));
-    const road = stages.querySelector('.journey-road');
-    const path = road.querySelector('path');
-    const point = path.getPointAtLength(path.getTotalLength() * walkerY / stages.offsetHeight);
-    walkerX = point.x * road.getBoundingClientRect().width / 360 + road.getBoundingClientRect().left - stages.getBoundingClientRect().left;
-  }
-
-  function onScroll() {
-    if (!scrollFrame) {
-      scrollFrame = requestAnimationFrame(() => {
-        updateWalker();
-        scrollFrame = 0;
-      });
-    }
-    walking = true;
-    clearTimeout(walkTimer);
-    walkTimer = setTimeout(() => { walking = false; }, 170);
-  }
+  let active = $state('home');
+  let menuOpen = $state(false);
+  let navHidden = $state(false);
+  let formNotice = $state('');
 
   function previewContact(event) {
     event.preventDefault();
-    formNotice = 'Preview only. Connect an email address or form service before launch.';
+    formNotice = 'Preview only. Add a real contact address before launch.';
   }
 
   onMount(() => {
-    const sections = document.querySelectorAll('main section[id]');
-    const sectionObserver = new IntersectionObserver((entries) => {
-      const visible = entries.filter((entry) => entry.isIntersecting)
-        .sort((first, second) => second.intersectionRatio - first.intersectionRatio);
-      if (visible[0]) active = visible[0].target.id;
-    }, { rootMargin: '-20% 0px -55% 0px', threshold: [0, 0.2, 0.5] });
-    sections.forEach((section) => sectionObserver.observe(section));
-
+    const sections = [...document.querySelectorAll('main section[id]')];
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -84,116 +46,182 @@
         }
       });
     }, { threshold: 0.08 });
-    document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
+    document.querySelectorAll('.reveal').forEach((item) => revealObserver.observe(item));
 
-    window.addEventListener('resize', updateWalker);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    updateWalker();
+    let frame = 0;
+    let lastScrollY = window.scrollY;
+    let scrollDirection = 0;
+    function updateScroll() {
+      frame = 0;
+      const scrollY = window.scrollY;
+      const delta = scrollY - lastScrollY;
+      scrollDirection = delta * scrollDirection < 0 ? delta : scrollDirection + delta;
+      if (scrollY < 60 || scrollDirection < -15) navHidden = false;
+      else if (scrollY > 120 && scrollDirection > 15 && !menuOpen) navHidden = true;
+      lastScrollY = scrollY;
+      const viewport = window.innerHeight;
+      let current = 'home';
+      for (const section of sections) {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= viewport * 0.48 && rect.bottom > viewport * 0.48) current = section.id;
+        if (rect.bottom > 0 && rect.top < viewport) {
+          const progress = Math.min(1, Math.max(0, (viewport - rect.top) / (viewport + rect.height)));
+          section.style.setProperty('--scroll-progress', progress.toFixed(3));
+        }
+      }
+      if (current !== active) active = current;
+    }
+    function requestUpdate() {
+      if (!frame) frame = requestAnimationFrame(updateScroll);
+    }
+    updateScroll();
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
     return () => {
-      sectionObserver.disconnect();
       revealObserver.disconnect();
-      window.removeEventListener('resize', updateWalker);
-      window.removeEventListener('scroll', onScroll);
-      cancelAnimationFrame(scrollFrame);
-      clearTimeout(walkTimer);
+      window.removeEventListener('scroll', requestUpdate);
+      window.removeEventListener('resize', requestUpdate);
+      cancelAnimationFrame(frame);
     };
   });
 </script>
 
 <svelte:head>
-  <meta property="og:title" content="Livia's Journey — Tax Audit Portfolio" />
-  <meta property="og:description" content="An illustrated professional journey through tax audit, education, experience, and interests." />
+  <title>Livia’s Journey — Portfolio</title>
+  <meta name="description" content="Follow Livia’s journey through education, work, strengths, and the places that shaped her." />
 </svelte:head>
 
 <a class="skip-link" href="#main-content">Skip to content</a>
 
-<main id="main-content">
-  <section class="hero" id="home" aria-labelledby="hero-title">
-    <div class="hero-cloud hero-cloud-left" aria-hidden="true"></div>
-    <div class="hero-cloud hero-cloud-right" aria-hidden="true"></div>
-    <nav class="checkpoint-nav" aria-label="Journey checkpoints">
-      <span class="checkpoint-caption">Journey stops</span>
-      <ol>{#each checkpoints as stop, index}<li class:next-stop={active === 'home' && index === 0} class:current-stop={active === stop.id}><a href={'#' + stop.id} aria-current={active === stop.id ? 'location' : undefined}><span class="checkpoint-number">0{index + 1}</span><span>{stop.label}</span></a></li>{/each}</ol>
-    </nav>
-    <div class="hero-world">
-      <h1 id="hero-title" aria-label="Livia’s Journey"><svg viewBox="0 0 900 250" aria-hidden="true"><defs><path id="title-arc" d="M 40 215 C 240 35 660 35 860 215" /></defs><text><textPath href="#title-arc" startOffset="50%" text-anchor="middle">Livia’s Journey</textPath></text></svg></h1>
-      <img src="/assets/journey-pixel-world.png" alt="Pixel-art world with Westminster and Big Ben, Bristol's Clifton Suspension Bridge, and Shanghai's skyline" />
-      <div class="hero-orbit-dog" aria-hidden="true"><div class="dog-sprite"></div></div>
+<header class="site-header" class:nav-hidden={navHidden && !menuOpen}>
+  <a class="brand" href="#home" aria-label="Livia's Journey, home"><span class="brand-icon" aria-hidden="true">✦</span><span>Livia’s Journey</span></a>
+  <nav class="journey-nav" aria-label="Journey stops">
+    <span class="nav-caption">The journey</span>
+    {#each stops as stop}
+      <a href={'#' + stop.id} class:active={active === stop.id} aria-current={active === stop.id ? 'location' : undefined}>
+        <span class="nav-icon" aria-hidden="true">{stop.icon}</span><span>{stop.label}</span>
+      </a>
+    {/each}
+  </nav>
+  <div class="mobile-nav">
+    <button type="button" class="mobile-nav-button" aria-expanded={menuOpen} aria-controls="mobile-stop-menu" onclick={() => menuOpen = !menuOpen}>
+      <span>✦ &nbsp;{stops.find((stop) => stop.id === active)?.label}</span><span aria-hidden="true">{menuOpen ? '×' : '☰'}</span>
+    </button>
+    {#if menuOpen}
+      <nav id="mobile-stop-menu" class="mobile-stop-menu" aria-label="Journey stops on mobile">
+        {#each stops as stop}
+          <a href={'#' + stop.id} aria-current={active === stop.id ? 'location' : undefined} onclick={() => menuOpen = false}>{stop.label}</a>
+        {/each}
+      </nav>
+    {/if}
+  </div>
+</header>
+
+<main id="main-content" tabindex="-1">
+  <section class="hero chapter" id="home" aria-labelledby="home-title">
+    <div class="hero-doodle heart" aria-hidden="true">♡</div><div class="hero-doodle plane" aria-hidden="true">✧</div>
+    <div class="hero-content reveal">
+      <span class="eyebrow">A little journey, a lot of heart</span>
+      <h1 id="home-title"><span>Livia’s</span><span>Journey</span></h1>
+      <p>Follow the road through the places, learning, and work that shaped Livia’s path in tax audit.</p>
+      <a class="journey-button" href="#education">Start the journey <span aria-hidden="true">↗</span></a>
+      <span class="hero-scroll-hint">Scroll to explore <span aria-hidden="true">↓</span></span>
     </div>
-    <aside class="hero-socials" aria-label="Social profile space"><span>Find Livia</span><div class="social-placeholder"><strong>in</strong><span>LinkedIn<small>Profile link to add</small></span></div></aside>
+    <div class="hero-world" aria-label="Sculpted globe with London, Bristol and Shanghai landmarks">
+      <div class="globe-scene">
+        <img class="globe-image" src="/assets/journey-clay-world.png" alt="" />
+        <span class="hero-dog dog-sprite" class:visible={active === 'home'} aria-hidden="true"></span>
+      </div>
+    </div>
+    <span class="floating-cloud cloud-one" aria-hidden="true">☁</span><span class="floating-cloud cloud-two" aria-hidden="true">☁</span>
   </section>
 
-  <div class="journey-stages">
-    <svg class="journey-road" viewBox="0 0 360 5000" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M170 118 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#d5e0dc" stroke-width="126" stroke-linecap="round" />
-      <path d="M170 118 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#788d90" stroke-width="108" stroke-linecap="round" />
-      <path d="M170 118 C115 300 220 620 135 950 S225 1530 155 1900 S120 2450 205 2870 S115 3500 165 3930 S215 4650 170 5000" fill="none" stroke="#f6efcf" stroke-width="3" stroke-dasharray="24 26" />
-    </svg>
-    <div class="road-start"><span>START</span></div>
-    <div class="road-walker" class:walking class:at-contact={active === 'contact'} style={'left:' + walkerX + 'px;top:' + walkerY + 'px'} aria-hidden="true"><div class="dog-sprite"></div></div>
-
-  <section class="story-section education" id="education" aria-labelledby="education-title">
-    <div class="roadside-sign" aria-hidden="true"><span>Education</span></div>
-    <div class="stage-content">
-      <header class="section-heading reveal"><svg class="chapter-motif" viewBox="0 0 32 32" aria-hidden="true"><path d="M11 27V9l5-5 5 5v18M8 27h16M12 13h8M16 15v5m-4 3h8" /></svg><h2 id="education-title">Education</h2><p>Qualifications, specialist study, and experiences that shaped the way Livia approaches complex work.</p></header>
+  <section class="story-section chapter" id="education" aria-labelledby="education-title" style="--chapter-tint:#f8eadb">
+    <div class="chapter-scene" aria-hidden="true">
+      <span class="scene-label">Stop 01 · Learn</span>
+      <img class="road-art" src="/assets/journey-clay-road.png" alt="" />
+      <span class="scene-dog dog-sprite" class:visible={active === 'education'}></span>
+      <div class="polaroid polaroid-one"><div class="photo-placeholder photo-london"><span>PHOTO TO COME</span></div><span class="polaroid-caption">A place to learn</span></div>
+      <div class="polaroid polaroid-two"><div class="photo-placeholder photo-bristol"><span>PHOTO TO COME</span></div><span class="polaroid-caption">A milestone</span></div>
     </div>
-    <div class="journey-list">
-      {#each studies as study, index}
-        <div class="journey-row">
-          <figure class="photo-slot road-photo reveal"><div class="photo-window">{#if photos.education[index]}<img src={photos.education[index]} alt={'Livia education photo ' + (index + 1)} />{:else}<span class="photo-plus" aria-hidden="true">+</span><span>PHOTO 0{index + 1}</span>{/if}</div><figcaption>{['Campus or place', 'Study or achievement', 'A milestone'][index]}</figcaption></figure>
-          <article class="journey-card paper-card reveal"><div><span class="card-kicker">EDUCATION · {study.label}</span><h3>{study.title}</h3><strong>{study.meta}</strong><p>{study.detail}</p></div><div class="place-logo">{#if placeLogos.education[index]}<img src={placeLogos.education[index]} alt={study.meta + ' logo'} />{:else}<span>PLACE<br />LOGO</span>{/if}</div></article>
-        </div>
-      {/each}
-    </div>
-  </section>
-
-  <section class="story-section work" id="work" aria-labelledby="work-title">
-    <div class="roadside-sign" aria-hidden="true"><span>Experience</span></div>
-    <div class="stage-content">
-      <header class="section-heading reveal"><svg class="chapter-motif" viewBox="0 0 32 32" aria-hidden="true"><path d="M3 25h26M6 25V8m20 17V8M6 10c6 10 14 10 20 0M10 15v10m6-6v6m6-10v10" /></svg><h2 id="work-title">Work experience</h2><p>A concise record of responsibilities, results, and the judgement developed along the way.</p></header>
-    </div>
-    <div class="journey-list">
-      {#each roles as role, index}
-        <div class="journey-row">
-          <figure class="photo-slot road-photo reveal"><div class="photo-window">{#if photos.work[index]}<img src={photos.work[index]} alt={'Livia work photo ' + (index + 1)} />{:else}<span class="photo-plus" aria-hidden="true">+</span><span>PHOTO 0{index + 1}</span>{/if}</div><figcaption>{['Team or office', 'Project moment', 'Professional milestone'][index]}</figcaption></figure>
-          <article class="journey-card paper-card reveal"><div><span class="card-kicker">{role.date} · {role.organisation}</span><h3>{role.title}</h3><p>{role.detail}</p></div><div class="place-logo">{#if placeLogos.work[index]}<img src={placeLogos.work[index]} alt={role.organisation + ' logo'} />{:else}<span>PLACE<br />LOGO</span>{/if}</div></article>
-        </div>
-      {/each}
-      <p class="sample-note">Roles, dates, outcomes, and photographs shown as placeholders until Livia supplies final material.</p>
-    </div>
-  </section>
-
-  <section class="story-section skills" id="skills" aria-labelledby="skills-title">
-    <div class="roadside-sign" aria-hidden="true"><span>Strengths</span></div>
-    <div class="stage-content">
-      <header class="section-heading reveal"><svg class="chapter-motif" viewBox="0 0 32 32" aria-hidden="true"><path d="M27 5C11 5 5 11 5 19c0 5 3 8 8 8 8 0 14-7 14-22ZM7 25c4-6 10-10 18-14" /></svg><h2 id="skills-title">Skills & strengths</h2><p>Professional strengths are most useful when backed by real examples. These are suggested categories to tailor.</p></header>
-      <div class="strength-grid">
-        {#each strengths as strength}
-          <article class="strength-card paper-card reveal"><span>{strength.number}</span><h3>{strength.title}</h3><p>{strength.detail}</p></article>
+    <div class="chapter-content">
+      <header class="chapter-heading reveal">
+        <div><span class="eyebrow">Stop 01 · Where it began</span><h2 id="education-title">Education</h2><p>Qualifications and specialist study that shaped Livia’s approach to thoughtful work.</p></div>
+      </header>
+      <div class="timeline" aria-label="Education timeline">
+        {#each studies as study}
+          <article class="timeline-entry reveal"><span class="timeline-date">{study.date}</span><span class="timeline-dot" aria-hidden="true"></span>
+            <div class="paper-card"><span class="card-overline">Education · sample content</span><h3>{study.title}</h3><strong>{study.place}</strong><p>{study.detail}</p></div>
+          </article>
         {/each}
       </div>
+      <div class="chapter-trail reveal"><div><span class="card-overline">Space for a memory</span><strong>A favourite learning moment</strong><p>Add one real photo or sentence from this stop.</p></div><a href="#work">Next: Work Experience <span aria-hidden="true">↗</span></a></div>
     </div>
   </section>
 
-  <section class="story-section interests" id="interests" aria-labelledby="interests-title">
-    <div class="roadside-sign" aria-hidden="true"><span>Beyond work</span></div>
-    <div class="stage-content">
-      <header class="section-heading reveal"><svg class="chapter-motif" viewBox="0 0 32 32" aria-hidden="true"><path d="m16 3 3.6 9.4L29 16l-9.4 3.6L16 29l-3.6-9.4L3 16l9.4-3.6L16 3Z" /></svg><h2 id="interests-title">Beyond work</h2><p>A considered glimpse of the person behind the professional profile.</p></header>
-      <div class="interests-grid">
-        <figure class="photo-slot interest-photo reveal"><div class="photo-window">{#if photos.interests[0]}<img src={photos.interests[0]} alt="Livia outside work" />{:else}<span class="photo-plus" aria-hidden="true">+</span><span>LIVIA PHOTO</span>{/if}</div><figcaption>Replace with a favourite personal photo.</figcaption></figure>
-        <div class="interests-copy paper-card reveal"><span class="card-kicker">PERSONAL INTERESTS · SAMPLE CONTENT</span><h3>Curiosity beyond the numbers.</h3><p>Add a few meaningful interests: a place, a hobby, a cause, or a project that says something about Livia.</p><div class="interest-tags"><span>Interest one</span><span>Interest two</span><span>Interest three</span></div></div>
+  <section class="story-section chapter" id="work" aria-labelledby="work-title" style="--chapter-tint:#fff8ec">
+    <div class="chapter-scene scene-reversed" aria-hidden="true">
+      <span class="scene-label">Stop 02 · Grow</span>
+      <img class="road-art road-art-work" src="/assets/journey-clay-road.png" alt="" />
+      <span class="scene-dog dog-sprite" class:visible={active === 'work'}></span>
+      <div class="polaroid polaroid-one"><div class="photo-placeholder photo-shanghai"><span>PHOTO TO COME</span></div><span class="polaroid-caption">Office life</span></div>
+      <div class="polaroid polaroid-two"><div class="photo-placeholder photo-london"><span>PHOTO TO COME</span></div><span class="polaroid-caption">Teamwork</span></div>
+      <div class="polaroid polaroid-three"><div class="photo-placeholder photo-bristol"><span>PHOTO TO COME</span></div><span class="polaroid-caption">New challenges</span></div>
+    </div>
+    <div class="chapter-content">
+      <header class="chapter-heading reveal">
+        <div><span class="eyebrow">Stop 02 · Turning knowledge into practice</span><h2 id="work-title">Work Experience</h2><p>A record of roles, responsibilities, and the judgement built along the way.</p></div>
+      </header>
+      <div class="timeline" aria-label="Work experience timeline">
+        {#each roles as role}
+          <article class="timeline-entry reveal"><span class="timeline-date">{role.date}</span><span class="timeline-dot" aria-hidden="true"></span>
+            <div class="paper-card"><span class="card-overline">Work · sample content</span><h3>{role.title}</h3><strong>{role.place}</strong><p>{role.detail}</p></div>
+          </article>
+        {/each}
       </div>
+      <div class="chapter-trail reveal"><div><span class="card-overline">Space for a memory</span><strong>A project to remember</strong><p>Add a specific result or team moment here.</p></div><a href="#skills">Next: Skills &amp; Strengths <span aria-hidden="true">↗</span></a></div>
     </div>
   </section>
 
-  <section class="story-section contact" id="contact" aria-labelledby="contact-title">
-    <div class="roadside-sign" aria-hidden="true"><span>Contact</span></div>
-    <div class="mailbox-scene" aria-hidden="true"><div class="mailbox"><span>MAIL</span><i></i></div><div class="mailbox-post"></div><img class="mailbox-dog" src="/assets/contact-dog-posting.png" alt="" /></div>
-    <div class="stage-content contact-grid">
-      <div class="contact-intro reveal"><svg class="chapter-motif" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 8h24v17H4zM4 9l12 9L28 9" /></svg><h2 id="contact-title">Let’s connect.</h2><p>For opportunities, professional conversations, or a thoughtful introduction.</p><div class="contact-rule"></div><span class="contact-small">A good working relationship starts with a clear conversation.</span></div>
-      <form class="contact-form paper-card reveal" on:submit={previewContact}><div class="letter-heading"><div><span>TO LIVIA · PERSONAL POST</span><strong>Leave a note</strong></div><span aria-hidden="true">✉</span></div><label><span>Name</span><input type="text" name="name" placeholder="Your name" required autocomplete="name" /></label><label><span>Email</span><input type="email" name="email" placeholder="Your email" required autocomplete="email" /></label><label><span>Message</span><textarea name="message" placeholder="How can I help?" rows="4" required></textarea></label><button type="submit">Post message <span aria-hidden="true">↗</span></button>{#if formNotice}<p class="form-notice" role="status">{formNotice}</p>{/if}<p class="form-helper">Preview form. Connect a real inbox before public launch.</p></form>
+  <section class="story-section chapter" id="skills" aria-labelledby="skills-title" style="--chapter-tint:#eff4e8">
+    <div class="chapter-scene" aria-hidden="true"><span class="scene-label">Stop 03 · Shine</span><img class="road-art" src="/assets/journey-clay-road.png" alt="" /><span class="scene-dog dog-sprite" class:visible={active === 'skills'}></span><div class="polaroid polaroid-one"><div class="photo-placeholder photo-shanghai"><span>PHOTO TO COME</span></div><span class="polaroid-caption">Skills in action</span></div></div>
+    <div class="chapter-content">
+      <header class="chapter-heading reveal"><div><span class="eyebrow">Stop 03 · What she brings</span><h2 id="skills-title">Skills &amp; Strengths</h2><p>Careful thinking, clear communication, and a little curiosity.</p></div></header>
+      <div class="road-stops">
+        {#each strengths as strength}
+          <article class="paper-card stop-card reveal"><span class="stop-number">{strength.number}</span><h3>{strength.title}</h3><p>{strength.detail}</p></article>
+        {/each}
+      </div>
+      <div class="chapter-trail reveal"><div><span class="card-overline">Space for an example</span><strong>Show it in action</strong><p>Add a real example of these strengths at work.</p></div><a href="#interests">Next: Personal Interests <span aria-hidden="true">↗</span></a></div>
     </div>
   </section>
-  </div>
-  <footer><a href="#home">Back to top ↑</a></footer>
+
+  <section class="story-section chapter" id="interests" aria-labelledby="interests-title" style="--chapter-tint:#fff0e8">
+    <div class="chapter-scene scene-reversed" aria-hidden="true"><span class="scene-label">Stop 04 · Explore</span><img class="road-art road-art-work" src="/assets/journey-clay-road.png" alt="" /><span class="scene-dog dog-sprite" class:visible={active === 'interests'}></span><div class="polaroid polaroid-one"><div class="photo-placeholder photo-bristol"><span>PHOTO TO COME</span></div><span class="polaroid-caption">Beyond the office</span></div><div class="polaroid polaroid-two"><div class="photo-placeholder photo-london"><span>PHOTO TO COME</span></div><span class="polaroid-caption">A favourite place</span></div></div>
+    <div class="chapter-content">
+      <header class="chapter-heading reveal"><div><span class="eyebrow">Stop 04 · The person behind the work</span><h2 id="interests-title">Personal Interests</h2><p>A few more stops make a journey more memorable.</p></div></header>
+      <div class="paper-card interests-card reveal"><span class="card-overline">Personal interests · sample content</span><h3>Curiosity beyond the numbers.</h3><p>Add places, hobbies, causes, or projects that say something about Livia.</p><div class="interest-tags"><span>Interest one</span><span>Interest two</span><span>Interest three</span></div></div>
+      <div class="interest-moments reveal"><div class="paper-card"><span class="card-overline">Photo story · placeholder</span><h3>A favourite place</h3><p>Add a photo and one short memory.</p></div><div class="paper-card"><span class="card-overline">Little joy · placeholder</span><h3>Beyond work</h3><p>Add a hobby, cause, or small joy.</p></div></div>
+      <div class="chapter-trail reveal"><div><span class="card-overline">Space for a personal note</span><strong>A little more of Livia</strong><p>Add a personal photo or a favourite place.</p></div><a href="#contact">Next: Contact <span aria-hidden="true">↗</span></a></div>
+    </div>
+  </section>
+
+  <section class="story-section chapter" id="contact" aria-labelledby="contact-title" style="--chapter-tint:#f4e9dd">
+    <div class="chapter-scene" aria-hidden="true"><span class="scene-label">Final stop · Hello</span><img class="road-art" src="/assets/journey-clay-road.png" alt="" /><span class="scene-dog dog-sprite" class:visible={active === 'contact'}></span><div class="polaroid polaroid-one"><div class="photo-placeholder photo-shanghai"><span>PHOTO TO COME</span></div><span class="polaroid-caption">Next chapter</span></div><div class="scene-stamp contact-stamp">Next stop? <span>♡</span></div></div>
+    <div class="chapter-content">
+      <header class="chapter-heading reveal"><div><span class="eyebrow">Final stop · Say hello</span><h2 id="contact-title">Let’s Connect</h2><p>For opportunities, conversations, or a thoughtful introduction.</p></div></header>
+      <form class="paper-card contact-form reveal" onsubmit={previewContact}>
+        <span class="card-overline">A note for Livia</span>
+        <label><span>Name</span><input type="text" name="name" placeholder="Your name" required autocomplete="name" /></label>
+        <label><span>Email</span><input type="email" name="email" placeholder="Your email" required autocomplete="email" /></label>
+        <label><span>Message</span><textarea name="message" placeholder="Write your message" rows="4" required></textarea></label>
+        <button class="journey-button" type="submit">Send a note <span aria-hidden="true">↗</span></button>
+        {#if formNotice}<p class="form-notice" role="status">{formNotice}</p>{/if}
+        <small>Preview form. Connect a real inbox before launch.</small>
+      </form>
+      <div class="chapter-trail reveal"><div><span class="card-overline">Before launch</span><strong>Ready for the next chapter</strong><p>Replace preview form with live contact details.</p></div><a href="#home">Back to Home <span aria-hidden="true">↗</span></a></div>
+    </div>
+  </section>
 </main>
+
+<footer>Made with care for Livia’s next chapter. <a href="#home">Back to start ↑</a></footer>
