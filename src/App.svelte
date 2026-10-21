@@ -28,7 +28,6 @@
 
   let active = $state('home');
   let menuOpen = $state(false);
-  let navHidden = $state(false);
   let formNotice = $state('');
 
   function previewContact(event) {
@@ -49,16 +48,8 @@
     document.querySelectorAll('.reveal').forEach((item) => revealObserver.observe(item));
 
     let frame = 0;
-    let lastScrollY = window.scrollY;
-    let scrollDirection = 0;
     function updateScroll() {
       frame = 0;
-      const scrollY = window.scrollY;
-      const delta = scrollY - lastScrollY;
-      scrollDirection = delta * scrollDirection < 0 ? delta : scrollDirection + delta;
-      if (scrollY < 60 || scrollDirection < -15) navHidden = false;
-      else if (scrollY > 120 && scrollDirection > 15 && !menuOpen) navHidden = true;
-      lastScrollY = scrollY;
       const viewport = window.innerHeight;
       let current = 'home';
       for (const section of sections) {
@@ -74,13 +65,18 @@
     function requestUpdate() {
       if (!frame) frame = requestAnimationFrame(updateScroll);
     }
+    function closeMenuOnEscape(event) {
+      if (event.key === 'Escape') menuOpen = false;
+    }
     updateScroll();
     window.addEventListener('scroll', requestUpdate, { passive: true });
     window.addEventListener('resize', requestUpdate);
+    window.addEventListener('keydown', closeMenuOnEscape);
     return () => {
       revealObserver.disconnect();
       window.removeEventListener('scroll', requestUpdate);
       window.removeEventListener('resize', requestUpdate);
+      window.removeEventListener('keydown', closeMenuOnEscape);
       cancelAnimationFrame(frame);
     };
   });
@@ -93,28 +89,23 @@
 
 <a class="skip-link" href="#main-content">Skip to content</a>
 
-<header class="site-header" class:nav-hidden={navHidden && !menuOpen}>
-  <a class="brand" href="#home" aria-label="Livia's Journey, home"><span class="brand-icon" aria-hidden="true">✦</span><span>Livia’s Journey</span></a>
-  <nav class="journey-nav" aria-label="Journey stops">
-    <span class="nav-caption">The journey</span>
-    {#each stops as stop}
-      <a href={'#' + stop.id} class:active={active === stop.id} aria-current={active === stop.id ? 'location' : undefined}>
-        <span class="nav-icon" aria-hidden="true">{stop.icon}</span><span>{stop.label}</span>
-      </a>
-    {/each}
-  </nav>
-  <div class="mobile-nav">
-    <button type="button" class="mobile-nav-button" aria-expanded={menuOpen} aria-controls="mobile-stop-menu" onclick={() => menuOpen = !menuOpen}>
-      <span>✦ &nbsp;{stops.find((stop) => stop.id === active)?.label}</span><span aria-hidden="true">{menuOpen ? '×' : '☰'}</span>
-    </button>
-    {#if menuOpen}
-      <nav id="mobile-stop-menu" class="mobile-stop-menu" aria-label="Journey stops on mobile">
+<header class="site-header">
+  <button type="button" class="nav-peek" aria-label={menuOpen ? 'Close journey navigation' : 'Open journey navigation'} aria-expanded={menuOpen} aria-controls="journey-menu" onclick={() => menuOpen = !menuOpen}>
+    <span aria-hidden="true">{menuOpen ? '⌃' : '⌄'}</span>
+  </button>
+  {#if menuOpen}
+    <div class="nav-panel" id="journey-menu">
+      <a class="brand" href="#home" aria-label="Livia's Journey, home" onclick={() => menuOpen = false}><span class="brand-icon" aria-hidden="true">✦</span><span>Livia’s Journey</span></a>
+      <nav class="journey-nav" aria-label="Journey stops">
+        <span class="nav-caption">The journey</span>
         {#each stops as stop}
-          <a href={'#' + stop.id} aria-current={active === stop.id ? 'location' : undefined} onclick={() => menuOpen = false}>{stop.label}</a>
+          <a href={'#' + stop.id} class:active={active === stop.id} aria-current={active === stop.id ? 'location' : undefined} onclick={() => menuOpen = false}>
+            <span class="nav-icon" aria-hidden="true">{stop.icon}</span><span>{stop.label}</span>
+          </a>
         {/each}
       </nav>
-    {/if}
-  </div>
+    </div>
+  {/if}
 </header>
 
 <main id="main-content" tabindex="-1">

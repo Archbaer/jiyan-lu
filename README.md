@@ -18,4 +18,4 @@ Build static files with `npm run build`. Output goes to `dist/`.
 - Replace chapter memory and personal-interest prompts with approved details.
 - Connect the contact form to an inbox or form service. It currently shows a preview notice.
 
-The globe gently floats in place while the dog walks along its road. She walks along the road in each later chapter too. On desktop, each chapter stays in view as the next arrives; mobile uses a shorter natural flow to keep cards readable. The side navigation hides while scrolling down and returns while scrolling up. Motion respects reduced-motion settings.
+The globe gently floats in place while the dog walks along its road. She walks from top to bottom along each later chapter’s road. On desktop, each chapter stays in view as the next arrives; mobile uses a shorter natural flow to keep cards readable. The small tab at the top opens the journey navigation. Motion respects reduced-motion settings.
