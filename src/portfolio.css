@@ -295,7 +295,18 @@ footer a:hover { text-decoration: underline; }
 
 @media (min-width: 901px) {
   .chapter { position: sticky; top: 0; min-height: 100svh; }
-  .story-section { box-shadow: 0 -12px 28px rgba(74,58,39,.08); }
+  .story-section {
+    border-top: 0;
+    box-shadow: 0 -12px 28px rgba(74,58,39,.08);
+    background-image: linear-gradient(90deg, transparent 0 43%, rgba(255,250,242,.42) 54%, rgba(255,252,247,.8)),
+                      url('/assets/journey-clay-road.png'), url('/assets/journey-clay-meadow.jpg');
+    background-size: auto, min(40vw, 590px) 114svh, cover;
+    background-position: center, left 3vw top -7vh, center bottom;
+    background-attachment: scroll, fixed, fixed;
+    background-repeat: no-repeat;
+  }
+  .chapter-scene::before, .road-art { display: none; }
+  .scene-reversed .scene-dog.visible { animation-name: road-dog, dog-steps; }
 }
 
 @media (max-width: 1200px) {
