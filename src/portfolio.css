@@ -149,7 +149,8 @@ main { position: relative; z-index: 1; }
   display: grid; grid-template-columns: minmax(280px, .9fr) minmax(440px, 1.1fr);
   gap: clamp(30px, 5vw, 85px); align-items: start;
   min-height: min(100svh, 950px); padding: 72px clamp(30px, 5vw, 85px) 60px 3vw;
-  background: linear-gradient(160deg, var(--chapter-tint), #fffaf2 66%, #fffdf7);
+  background: linear-gradient(90deg, rgba(255,249,239,.05), rgba(255,250,242,.42) 54%, rgba(255,252,247,.8)),
+              url('/assets/journey-clay-meadow.jpg') center bottom / cover no-repeat, var(--chapter-tint);
   border-top: 1px solid #eadfd0;
 }
 .story-section::after {
@@ -320,7 +321,11 @@ footer a:hover { text-decoration: underline; }
   .hero-world { position: relative; align-self: center; width: min(90vw, 560px); right: auto; top: auto; margin: -12px 0 -28px; }
   .heart { left: 83%; top: 20%; }.plane { top: 48%; right: 4%; }
   .floating-cloud { font-size: 50px; }.cloud-two { left: 5%; bottom: 11%; }
-  .story-section { display: flex; flex-direction: column; gap: 0; padding: 76px 20px 38px; }
+  .story-section {
+    display: flex; flex-direction: column; gap: 0; padding: 76px 20px 38px;
+    background-image: linear-gradient(180deg, rgba(255,250,243,.43), rgba(255,250,243,.35)), url('/assets/journey-clay-meadow.jpg');
+    background-position: center, 38% bottom;
+  }
   .chapter-scene { position: relative; top: auto; align-self: center; width: min(100%, 480px); height: min(92vw, 420px); order: 2; margin: 5px auto 0; overflow: visible; }
   .road-art { width: 72%; height: 100%; }
   .scene-dog { width: clamp(54px, 16vw, 72px); }

@@ -37,6 +37,9 @@
 
   onMount(() => {
     const sections = [...document.querySelectorAll('main section[id]')];
+    const main = document.querySelector('main');
+    const previousScrollRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = 'manual';
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -68,15 +71,39 @@
     function closeMenuOnEscape(event) {
       if (event.key === 'Escape') menuOpen = false;
     }
+    function scrollToStop(id, smooth = true) {
+      const index = sections.findIndex((section) => section.id === id);
+      if (index < 0) return;
+      const mainTop = main.getBoundingClientRect().top + window.scrollY;
+      const top = sections.slice(0, index).reduce((position, section) => position + section.offsetHeight, mainTop);
+      window.scrollTo({ top, behavior: smooth && !window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'smooth' : 'instant' });
+    }
+    function navigateToStop(event) {
+      const link = event.target instanceof Element ? event.target.closest('a[href^="#"]') : null;
+      const id = link?.getAttribute('href').slice(1);
+      if (!id || !sections.some((section) => section.id === id)) return;
+      event.preventDefault();
+      menuOpen = false;
+      if (window.location.hash !== `#${id}`) window.history.pushState(null, '', `#${id}`);
+      scrollToStop(id);
+    }
+    function restoreStop() {
+      requestAnimationFrame(() => scrollToStop(window.location.hash.slice(1), false));
+    }
     updateScroll();
+    document.addEventListener('click', navigateToStop, true);
     window.addEventListener('scroll', requestUpdate, { passive: true });
     window.addEventListener('resize', requestUpdate);
     window.addEventListener('keydown', closeMenuOnEscape);
+    window.addEventListener('popstate', restoreStop);
     return () => {
       revealObserver.disconnect();
+      document.removeEventListener('click', navigateToStop, true);
       window.removeEventListener('scroll', requestUpdate);
       window.removeEventListener('resize', requestUpdate);
       window.removeEventListener('keydown', closeMenuOnEscape);
+      window.removeEventListener('popstate', restoreStop);
+      window.history.scrollRestoration = previousScrollRestoration;
       cancelAnimationFrame(frame);
     };
   });
@@ -95,11 +122,11 @@
   </button>
   {#if menuOpen}
     <div class="nav-panel" id="journey-menu">
-      <a class="brand" href="#home" aria-label="Livia's Journey, home" onclick={() => menuOpen = false}><span class="brand-icon" aria-hidden="true">✦</span><span>Livia’s Journey</span></a>
+      <a class="brand" href="#home" aria-label="Livia's Journey, home"><span class="brand-icon" aria-hidden="true">✦</span><span>Livia’s Journey</span></a>
       <nav class="journey-nav" aria-label="Journey stops">
         <span class="nav-caption">The journey</span>
         {#each stops as stop}
-          <a href={'#' + stop.id} class:active={active === stop.id} aria-current={active === stop.id ? 'location' : undefined} onclick={() => menuOpen = false}>
+          <a href={'#' + stop.id} class:active={active === stop.id} aria-current={active === stop.id ? 'location' : undefined}>
             <span class="nav-icon" aria-hidden="true">{stop.icon}</span><span>{stop.label}</span>
           </a>
         {/each}
