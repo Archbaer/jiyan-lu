@@ -169,7 +169,7 @@
       <div class="timeline" aria-label="Education timeline">
         {#each studies as study}
           <article class="timeline-entry reveal"><span class="timeline-date">{study.date}</span><span class="timeline-dot" aria-hidden="true"></span>
-            <div class="paper-card"><span class="card-overline">Education · sample content</span><h3>{study.title}</h3><strong>{study.place}</strong><p>{study.detail}</p></div>
+            <div class="paper-card"><div class="card-meta"><span class="card-overline">Education · sample content</span><span class="inline-date">{study.date}</span></div><h3>{study.title}</h3><strong>{study.place}</strong><p>{study.detail}</p></div>
           </article>
         {/each}
       </div>
@@ -193,7 +193,7 @@
       <div class="timeline" aria-label="Work experience timeline">
         {#each roles as role}
           <article class="timeline-entry reveal"><span class="timeline-date">{role.date}</span><span class="timeline-dot" aria-hidden="true"></span>
-            <div class="paper-card"><span class="card-overline">Work · sample content</span><h3>{role.title}</h3><strong>{role.place}</strong><p>{role.detail}</p></div>
+            <div class="paper-card"><div class="card-meta"><span class="card-overline">Work · sample content</span><span class="inline-date">{role.date}</span></div><h3>{role.title}</h3><strong>{role.place}</strong><p>{role.detail}</p></div>
           </article>
         {/each}
       </div>

@@ -171,26 +171,19 @@ main { position: relative; z-index: 1; }
   filter: drop-shadow(0 13px 12px rgba(83,77,53,.1));
 }
 .road-art-work { transform: translateY(calc(var(--scroll-progress, 0) * -42px)) scaleX(-1); }
-.scene-dog { position: absolute; z-index: 5; left: 57%; top: 4%; width: clamp(70px, 8vw, 98px); filter: drop-shadow(2px 7px 4px rgba(29,41,36,.25)); }
+.scene-dog { position: absolute; z-index: 5; left: 52%; top: 12%; width: clamp(70px, 8vw, 98px); transform: translate(-50%, -80%); filter: drop-shadow(2px 7px 4px rgba(29,41,36,.25)); }
 .scene-dog.visible { animation: road-dog 17s linear infinite, dog-steps .55s steps(3) infinite; }
 .scene-reversed .scene-dog.visible { animation-name: road-dog-reversed, dog-steps; }
 @keyframes road-dog {
-  0%, 100% { left: 57%; top: 4%; opacity: 0; }
+  0%, 100% { left: min(27.4vw, 404px); top: 12%; opacity: 0; }
   5% { opacity: 1; }
-  25% { left: 65%; top: 24%; }
-  50% { left: 33%; top: 38%; }
-  75% { left: 57%; top: 56%; }
-  95% { opacity: 1; }
-  99% { left: 25%; top: 80%; opacity: 0; }
-}
-@keyframes road-dog-reversed {
-  0%, 100% { left: 22%; top: 4%; opacity: 0; }
-  5% { opacity: 1; }
-  25% { left: 14%; top: 24%; }
-  50% { left: 46%; top: 38%; }
-  75% { left: 22%; top: 56%; }
-  95% { opacity: 1; }
-  99% { left: 54%; top: 80%; opacity: 0; }
+  20% { left: min(31.8vw, 469px); top: 26%; }
+  40% { left: min(21.8vw, 322px); top: 41%; }
+  58% { left: min(22.3vw, 329px); top: 55%; }
+  74% { left: min(26.2vw, 386px); top: 70%; }
+  85% { left: min(21.6vw, 319px); top: 80%; }
+  95% { left: min(11.1vw, 164px); top: 92%; opacity: 1; }
+  99% { opacity: 0; }
 }
 .scene-label {
   position: absolute; z-index: 4; top: 10%; left: 0; transform: rotate(-5deg);
@@ -246,8 +239,9 @@ main { position: relative; z-index: 1; }
 .timeline-entry { display: grid; grid-template-columns: 88px 16px minmax(0,1fr); gap: 10px; align-items: start; }
 .timeline-date { padding-top: 18px; text-align: right; color: #4e6580; font: 700 17px/1.2 var(--hand); }
 .timeline-dot { z-index: 1; width: 14px; height: 14px; margin-top: 18px; border: 3px solid #b4936d; border-radius: 50%; background: #fffdf8; box-shadow: 0 0 0 3px #fffaf2; }
+.inline-date { display: none; }
 .paper-card {
-  padding: 19px 21px; background: rgba(255,253,248,.92); border: 1px solid #eadfce;
+  padding: 19px 21px; background: var(--paper); border: 1px solid #eadfce;
   border-radius: 17px; box-shadow: 0 9px 22px rgba(92,70,48,.07), 0 2px 0 #e9d5b7;
 }
 .paper-card h3 { margin: 7px 0 5px; color: var(--navy); font: 700 clamp(17px,1.5vw,21px)/1.25 var(--sans); }
@@ -266,7 +260,7 @@ main { position: relative; z-index: 1; }
 .chapter-trail {
   display: flex; align-items: center; justify-content: space-between; gap: 15px;
   min-height: 90px; margin: 18px 0 0 38px; padding: 15px 18px;
-  border: 1px dashed #d7b78e; border-radius: 17px; background: rgba(255,253,248,.82);
+  border: 1px dashed #d7b78e; border-radius: 17px; background: var(--paper);
   box-shadow: 0 8px 22px rgba(92,70,48,.055);
 }
 .timeline + .chapter-trail { margin-left: 124px; }
@@ -295,6 +289,8 @@ footer a:hover { text-decoration: underline; }
 
 @media (min-width: 901px) {
   .chapter { position: sticky; top: 0; min-height: 100svh; }
+  .chapter-content { transform: translateY(calc(-72px - 7svh)); }
+  .chapter-scene { margin-top: calc(-72px - 7svh); margin-bottom: calc(72px + 7svh); }
   .story-section {
     border-top: 0;
     box-shadow: 0 -12px 28px rgba(74,58,39,.08);
@@ -320,6 +316,32 @@ footer a:hover { text-decoration: underline; }
   .hero-content { width: 40%; }
   .hero h1 { font-size: clamp(70px, 9vw, 100px); }
   .story-section { padding: 75px 4vw 55px; grid-template-columns: minmax(215px,.8fr) minmax(345px,1.2fr); }
+  .road-art { transform: none; }
+  .road-art-work { transform: scaleX(-1); }
+  .scene-dog.visible { animation-name: road-dog-tablet, dog-steps; }
+  .scene-reversed .scene-dog.visible { animation-name: road-dog-tablet-reversed, dog-steps; }
+  @keyframes road-dog-tablet {
+    0%, 100% { left: 68%; top: 12%; opacity: 0; }
+    5% { opacity: 1; }
+    20% { left: 79%; top: 26%; }
+    40% { left: 55%; top: 41%; }
+    58% { left: 56%; top: 55%; }
+    74% { left: 65%; top: 70%; }
+    85% { left: 54%; top: 80%; }
+    95% { left: 28%; top: 92%; opacity: 1; }
+    99% { opacity: 0; }
+  }
+  @keyframes road-dog-tablet-reversed {
+    0%, 100% { left: 32%; top: 12%; opacity: 0; }
+    5% { opacity: 1; }
+    20% { left: 21%; top: 26%; }
+    40% { left: 45%; top: 41%; }
+    58% { left: 44%; top: 55%; }
+    74% { left: 35%; top: 70%; }
+    85% { left: 46%; top: 80%; }
+    95% { left: 72%; top: 92%; opacity: 1; }
+    99% { opacity: 0; }
+  }
 }
 @media (max-width: 700px) {
   .hero { display: flex; flex-direction: column; align-items: stretch; padding: 82px 20px 34px; min-height: 100svh; }
@@ -330,7 +352,7 @@ footer a:hover { text-decoration: underline; }
   .hero-scroll-hint { display: none; }
   .journey-button { min-width: 195px; padding: 12px 14px; font-size: 8px; }
   .hero-world { position: relative; align-self: center; width: min(90vw, 560px); right: auto; top: auto; margin: -12px 0 -28px; }
-  .heart { left: 83%; top: 20%; }.plane { top: 48%; right: 4%; }
+  .heart { left: auto; right: 8%; top: 20%; }.plane { top: 48%; right: 4%; }
   .floating-cloud { font-size: 50px; }.cloud-two { left: 5%; bottom: 11%; }
   .story-section {
     display: flex; flex-direction: column; gap: 0; padding: 76px 20px 38px;
@@ -338,11 +360,38 @@ footer a:hover { text-decoration: underline; }
     background-position: center, 38% bottom;
   }
   .chapter-scene { position: relative; top: auto; align-self: center; width: min(100%, 480px); height: min(92vw, 420px); order: 2; margin: 5px auto 0; overflow: visible; }
-  .road-art { width: 72%; height: 100%; }
+  .road-art { position: absolute; top: 0; left: 50%; width: 72%; height: 100%; transform: translateX(-50%); }
+  .road-art-work { transform: translateX(-50%) scaleX(-1); }
   .scene-dog { width: clamp(54px, 16vw, 72px); }
+  .scene-dog.visible { animation-name: road-dog-mobile, dog-steps; }
+  .scene-reversed .scene-dog.visible { animation-name: road-dog-reversed, dog-steps; }
+  @keyframes road-dog-mobile {
+    0%, 100% { left: 63%; top: 12%; opacity: 0; }
+    5% { opacity: 1; }
+    20% { left: 71%; top: 26%; }
+    40% { left: 53%; top: 41%; }
+    58% { left: 54%; top: 55%; }
+    74% { left: 61%; top: 70%; }
+    85% { left: 53%; top: 80%; }
+    95% { left: 34%; top: 92%; opacity: 1; }
+    99% { opacity: 0; }
+  }
+  @keyframes road-dog-reversed {
+    0%, 100% { left: 37%; top: 12%; opacity: 0; }
+    5% { opacity: 1; }
+    20% { left: 29%; top: 26%; }
+    40% { left: 47%; top: 41%; }
+    58% { left: 46%; top: 55%; }
+    74% { left: 39%; top: 70%; }
+    85% { left: 47%; top: 80%; }
+    95% { left: 66%; top: 92%; opacity: 1; }
+    99% { opacity: 0; }
+  }
   .scene-label { left: 0; top: 2%; font-size: 16px; padding: 9px 15px; }
   .polaroid { width: clamp(110px, 30vw, 145px); }
-  .polaroid-one { left: 0; top: 18%; }.polaroid-two { right: 0; top: 35%; }.polaroid-three { left: 1%; bottom: 0; }
+  .polaroid-one { left: 0; top: 18%; }.polaroid-two { right: 0; top: 55%; }.polaroid-three { display: none; }
+  .scene-reversed .polaroid-one { top: 54%; width: clamp(95px, 26vw, 125px); }
+  .scene-reversed .polaroid-two { top: 18%; }
   .chapter-content { display: contents; }
   .chapter-heading { order: 1; min-height: 115px; margin: 0; }
   .timeline, .road-stops, .interests-card, .interest-moments, .contact-form { order: 3; width: 100%; }
@@ -351,12 +400,16 @@ footer a:hover { text-decoration: underline; }
   .timeline + .chapter-trail { margin-left: 0; }
   .chapter-heading h2 { font-size: clamp(49px, 10vw, 75px); }
   .chapter-heading p { font-size: 13px; }
-  .timeline { margin-top: 15px; }.timeline::before { left: 87px; }
-  .timeline-entry { grid-template-columns: 73px 16px minmax(0,1fr); gap: 6px; }
-  .timeline-date { font-size: 14px; }
+  .timeline { margin-top: 15px; }
+  .timeline::before, .timeline-date, .timeline-dot { display: none; }
+  .timeline-entry { display: block; }
+  .card-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .card-meta .card-overline { font-size: clamp(6px, 1.6vw, 9px); }
+  .inline-date { display: inline; flex: none; color: #4e6580; font: 700 14px/1.2 var(--hand); white-space: nowrap; }
   .paper-card { padding: 15px; }
   .road-stops, .interests-card, .interest-moments, .contact-form { margin-left: 0; }
-  .road-stops { margin-top: 15px; }
+  .road-stops { margin-top: 15px; padding-left: 0; border-left: 0; }
+  .stop-card::before { display: none; }
   .interests-card, .contact-form { margin-top: 18px; }
   .interest-moments { margin-top: 12px; }
 }
@@ -365,15 +418,15 @@ footer a:hover { text-decoration: underline; }
   .hero-world { width: calc(100vw - 12px); margin-left: -14px; margin-right: -14px; }
   .chapter-heading { gap: 5px; }
   .chapter-heading h2 { font-size: 45px; }
-  .timeline-entry { grid-template-columns: 63px 12px minmax(0,1fr); gap: 5px; }
-  .timeline::before { left: 73px; }
-  .timeline-date { font-size: 12px; }
-  .timeline-dot { width: 11px; height: 11px; }
   .paper-card h3 { font-size: 16px; }
+}
+@media (min-width: 901px) and (max-height: 800px) {
+  .chapter { position: relative; }
+  .chapter-content { transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .reveal { opacity: 1; transform: none; }
-  .road-art, .polaroid { transform: none; }
+  .polaroid { transform: none; }
 }
