@@ -25,6 +25,36 @@ test('production page loads every chapter and asset without browser errors', asy
   expect(failedResponses).toEqual([]);
 });
 
+test('CV button downloads the PDF with a clear filename', async ({ page }) => {
+  await page.route('**/cv/Jiyan-Lu-CV.pdf', (route) => route.fulfill({
+    status: 200,
+    contentType: 'application/pdf',
+    body: '%PDF-1.4\n%%EOF'
+  }));
+  await page.goto('/');
+  const cvLink = page.getByRole('link', { name: 'Download CV' });
+  await expect(cvLink).toHaveAttribute('href', '/cv/Jiyan-Lu-CV.pdf');
+  await expect(cvLink).toHaveAttribute('download', '');
+  const downloadPromise = page.waitForEvent('download');
+  await cvLink.click();
+  expect((await downloadPromise).suggestedFilename()).toBe('Jiyan-Lu-CV.pdf');
+});
+
+test('page ends without the old footer', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('footer')).toHaveCount(0);
+});
+
+test('navigation is compact without shrinking touch targets', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Open journey navigation' }).click();
+  const panel = page.locator('#journey-menu');
+  expect((await panel.boundingBox()).width).toBeLessThanOrEqual(230);
+  for (const link of await page.getByRole('navigation', { name: 'Journey stops' }).getByRole('link').all()) {
+    expect((await link.boundingBox()).height).toBeGreaterThanOrEqual(44);
+  }
+});
+
 test('chapter navigation and deep links scroll to the right content', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Open journey navigation' }).click();
