@@ -338,12 +338,12 @@
   </section>
 
   <section class="story-section chapter" id="contact" aria-labelledby="contact-title" style="--chapter-tint:#f4e9dd">
-    <div class="chapter-scene" aria-hidden="true"><span class="scene-label">Final stop · Hello</span><img class="road-art" src="/assets/journey-clay-road.png" alt="" /><span class="scene-dog dog-sprite" class:visible={active === 'contact'}></span><div class="polaroid polaroid-one"><div class="scene-fact"><strong>UK / CN</strong><span>Bristol · Jiangsu</span></div><span class="polaroid-caption">Open to graduate tax roles</span></div><div class="scene-stamp contact-stamp">Next stop? <span>♡</span></div></div>
+    <div class="chapter-scene" aria-hidden="true"><span class="scene-label">Final stop · Hello</span><img class="road-art" src="/assets/journey-clay-road.png" alt="" /><span class="scene-dog dog-sprite" class:visible={active === 'contact'}></span><div class="polaroid polaroid-one"><div class="scene-fact"><strong>UK / CN</strong><span>Bristol · Jiangsu</span></div><span class="polaroid-caption">Open to graduate tax roles</span></div><img class="contact-posting" src="/assets/contact-dog-posting.png" alt="" /></div>
     <div class="chapter-content">
       <header class="chapter-heading reveal"><div><span class="eyebrow">Final stop · Say hello</span><h2 id="contact-title">Let’s Connect</h2><p>Seeking a graduate tax role with structured training and a path towards complex advisory work.</p></div></header>
       <form class="paper-card contact-form reveal" onsubmit={sendMessage}>
         <div class="contact-form-heading">
-          <div><span class="card-overline">Contact Livia</span><h3>Let’s start a conversation.</h3></div>
+          <div><span class="card-overline">Contact Livia · Air mail</span><h3>Let’s start a conversation.</h3></div>
           <a class="linkedin-link" href={linkedInUrl} target="_blank" rel="noreferrer" aria-label="Connect with Livia on LinkedIn (opens in a new tab)">
             <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.852 3.37-1.852 3.601 0 4.267 2.37 4.267 5.455v6.288zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
           </a>
@@ -353,7 +353,10 @@
         <label for="contact-name">Name<input id="contact-name" type="text" name="name" required autocomplete="name" maxlength="80" /></label>
         <label for="contact-email">Email<input id="contact-email" type="email" name="email" required autocomplete="email" /></label>
         <label for="contact-message">Message<textarea id="contact-message" name="message" rows="5" required></textarea></label>
-        <button class="journey-button" type="submit" disabled={sending}>{sending ? 'Sending…' : 'Send message'} <span aria-hidden="true">↗</span></button>
+        <div class="contact-actions">
+          <button class="journey-button" type="submit" disabled={sending}>{sending ? 'Sending…' : 'Send message'} <span aria-hidden="true">↗</span></button>
+          <a class="journey-button" href="/cv/Jiyan-Lu-CV.pdf" download>Download CV <span aria-hidden="true">↓</span></a>
+        </div>
         <p class="form-notice" class:error={formError} role="status" aria-atomic="true">{formNotice}</p>
         <small>Messages are delivered by Web3Forms.</small>
       </form>

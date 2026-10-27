@@ -13,7 +13,7 @@ test('production page loads every chapter and asset without browser errors', asy
   await expect(page).toHaveTitle('Jiyan (Livia) Lu | Accounting, Finance & Tax');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Livia’s');
   await expect(page.locator('main section')).toHaveCount(6);
-  await expect(page.locator('img')).toHaveCount(6);
+  await expect(page.locator('img')).toHaveCount(7);
   await page.waitForFunction(() => [...document.images].every((image) => image.complete && image.naturalWidth > 0));
 
   const linkedInLinks = page.getByRole('link', { name: 'Connect with Livia on LinkedIn (opens in a new tab)' });
@@ -25,19 +25,28 @@ test('production page loads every chapter and asset without browser errors', asy
   expect(failedResponses).toEqual([]);
 });
 
-test('CV button downloads the PDF with a clear filename', async ({ page }) => {
+test('CV buttons download the PDF with a clear filename', async ({ page }) => {
   await page.route('**/cv/Jiyan-Lu-CV.pdf', (route) => route.fulfill({
     status: 200,
     contentType: 'application/pdf',
     body: '%PDF-1.4\n%%EOF'
   }));
   await page.goto('/');
-  const cvLink = page.getByRole('link', { name: 'Download CV' });
-  await expect(cvLink).toHaveAttribute('href', '/cv/Jiyan-Lu-CV.pdf');
-  await expect(cvLink).toHaveAttribute('download', '');
+  const cvLinks = page.getByRole('link', { name: 'Download CV' });
+  await expect(cvLinks).toHaveCount(2);
+  for (const link of await cvLinks.all()) {
+    await expect(link).toHaveAttribute('href', '/cv/Jiyan-Lu-CV.pdf');
+    await expect(link).toHaveAttribute('download', '');
+  }
   const downloadPromise = page.waitForEvent('download');
-  await cvLink.click();
+  await cvLinks.last().click();
   expect((await downloadPromise).suggestedFilename()).toBe('Jiyan-Lu-CV.pdf');
+});
+
+test('contact scene uses the posting dog instead of the old stamp', async ({ page }) => {
+  await page.goto('/#contact');
+  await expect(page.locator('#contact img[src="/assets/contact-dog-posting.png"]')).toBeVisible();
+  await expect(page.locator('#contact .scene-stamp')).toHaveCount(0);
 });
 
 test('page ends without the old footer', async ({ page }) => {
