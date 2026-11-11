@@ -1,32 +1,32 @@
-# Livia’s Journey
+# Livia's Journey
 
-One-page Svelte portfolio for Livia. A gently moving clay globe opens the journey; sculpted roads, timelines, Polaroids, and one walking dog guide the later sections.
+A one-page portfolio for Jiyan (Livia) Lu, an MSc Accounting, Finance and Management candidate at the University of Bristol with nine ACCA exams passed and experience in IPO audit and UK SEIS consulting. She is seeking a graduate tax role.
 
-## Run locally
+The site is a single scrolling story rather than a conventional résumé: a floating clay globe opens the page, then a road unwinds through four chapters (Education, Work Experience, Skills & Strengths, Beyond Work) with Polaroids pinned along the way and a small dog walking the road as you scroll. It ends at a contact card with a CV download and an email form.
+
+![Home](docs/screenshots/desktop-home.jpg)
+
+Built with Svelte 5 and Vite. Static, no backend, deploys to Vercel.
+
+## Run
 
 ```bash
 npm ci
-npm run dev
+npm run dev     # local server
+npm test        # Playwright smoke tests
+npm run build   # static output in dist/
 ```
 
-Build static files with `npm run build`. Output goes to `dist/`.
+## Content and configuration
 
-## Edit portfolio content
+- Portfolio copy lives near the top of `src/App.svelte`; layout and styling in `src/portfolio.css`.
+- The contact form posts to Web3Forms. Set `VITE_WEB3FORMS_ACCESS_KEY` in `.env.local` locally and in the Vercel project for production. Without it, the form falls back to LinkedIn.
+- Restrict the Web3Forms key to the production domain in their dashboard.
+- Deployment details are in `vercel.json` and `.nvmrc` (Node 22).
 
-- Edit qualifications, roles, strengths, and activities near the top of `src/App.svelte`.
-- Update the matching scene facts and chapter summaries in the same file when those details change.
-- Contact messages use Web3Forms; LinkedIn provides an alternative contact route.
+## Screenshots
 
-## Contact form
-
-Create `.env.local` and set `VITE_WEB3FORMS_ACCESS_KEY=your_access_key`. Set the same variable in the deployment environment. Without a key, the form asks visitors to use LinkedIn instead.
-
-## Deploy on Vercel
-
-Import the repository into Vercel. The project uses the Vite preset: build with `npm run build` and serve `dist/`. `vercel.json` pins these settings and adds baseline security and caching headers.
-
-- Set `VITE_WEB3FORMS_ACCESS_KEY` under Project → Settings → Environment Variables for Production (and Preview if the form should work there). It is read at build time.
-- In the Web3Forms dashboard, restrict the access key to the production domain. Preview deployments use generated URLs, so submissions from them are rejected unless those domains are allowed too.
-- Node 22 is pinned through `.nvmrc` and the `engines` field to match CI.
-
-The globe gently floats in place while the dog walks along its road. She walks from top to bottom along the chapter road. On desktop, the road stays continuous as each chapter arrives; mobile uses a shorter natural flow to keep cards readable. The small tab at the top opens the journey navigation. Motion respects reduced-motion settings.
+| Desktop | Mobile |
+| --- | --- |
+| ![Education](docs/screenshots/desktop-education.jpg) | ![Education](docs/screenshots/mobile-education.jpg) |
+| ![Contact](docs/screenshots/desktop-contact.jpg) | ![Contact](docs/screenshots/mobile-contact.jpg) |
