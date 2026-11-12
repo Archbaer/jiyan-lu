@@ -1,12 +1,39 @@
-# Livia's Journey
+# Journey Portfolio
 
-A one-page portfolio for Jiyan (Livia) Lu, an MSc Accounting, Finance and Management candidate at the University of Bristol with nine ACCA exams passed and experience in IPO audit and UK SEIS consulting. She is seeking a graduate tax role.
-
-The site is a single scrolling story rather than a conventional résumé: a floating clay globe opens the page, then a road unwinds through four chapters (Education, Work Experience, Skills & Strengths, Beyond Work) with Polaroids pinned along the way and a small dog walking the road as you scroll. It ends at a contact card with a CV download and an email form.
+A one-page storytelling portfolio built with Svelte 5 and Vite. Rather than a conventional résumé layout, the content unfolds as a journey: a floating clay globe opens the page, a winding road links the chapters, and a small animated dog walks the road as you scroll. It ends at a contact card.
 
 ![Home](docs/screenshots/desktop-home.jpg)
 
-Built with Svelte 5 and Vite. Static, no backend, deploys to Vercel.
+## What it showcases
+
+- **Hero scene** — floating globe artwork with a profile summary and two calls to action.
+- **Chapter navigation** — a compact slide-down menu linking to each stop, with active-section tracking, keyboard support, and `Escape` to close.
+- **Story chapters** — Education, Work Experience, Skills & Strengths, and Beyond Work, each paired with an illustrated road scene and pinned Polaroid fact cards.
+- **Timeline entries** — date-labelled cards with bullet detail, revealed on scroll.
+- **Contact card** — CV download, LinkedIn link, and an accessible email form with validation, sending state, and a graceful fallback when no submission key is configured.
+- **Responsive motion** — a continuous road on desktop, a shorter natural flow on mobile; animation respects `prefers-reduced-motion`.
+
+## Stack
+
+| Tool | Role |
+| --- | --- |
+| Svelte 5 | Components and runes-based state |
+| Vite 6 | Dev server and static build |
+| Playwright | End-to-end smoke tests, run in CI |
+| Vercel | Static hosting |
+
+No backend. The build output is plain HTML, CSS, JS, and images.
+
+## Project structure
+
+```
+src/App.svelte      content and page structure
+src/portfolio.css   layout, scenes, and styling
+public/assets/      illustrations and sprites
+public/cv/          downloadable PDF
+tests/              Playwright specs
+vercel.json         deployment and header configuration
+```
 
 ## Run
 
@@ -17,12 +44,11 @@ npm test        # Playwright smoke tests
 npm run build   # static output in dist/
 ```
 
-## Content and configuration
+## Notes
 
-- Portfolio copy lives near the top of `src/App.svelte`; layout and styling in `src/portfolio.css`.
-- The contact form posts to Web3Forms. Set `VITE_WEB3FORMS_ACCESS_KEY` in `.env.local` locally and in the Vercel project for production. Without it, the form falls back to LinkedIn.
-- Restrict the Web3Forms key to the production domain in their dashboard.
-- Deployment details are in `vercel.json` and `.nvmrc` (Node 22).
+- The contact form posts to a third-party form service. Its access key is supplied through the environment (`VITE_WEB3FORMS_ACCESS_KEY`) and is never committed.
+- Restrict that key to the production domain in the service dashboard before going live.
+- Deployment settings live in `vercel.json`; Node 22 is pinned through `.nvmrc`.
 
 ## Screenshots
 
