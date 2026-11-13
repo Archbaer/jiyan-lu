@@ -35,15 +35,6 @@ tests/              Playwright specs
 vercel.json         deployment and header configuration
 ```
 
-## Run
-
-```bash
-npm ci
-npm run dev     # local server
-npm test        # Playwright smoke tests
-npm run build   # static output in dist/
-```
-
 ## Notes
 
 - The contact form posts to a third-party form service. Its access key is supplied through the environment (`VITE_WEB3FORMS_ACCESS_KEY`) and is never committed.
