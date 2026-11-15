@@ -257,7 +257,7 @@
     </div>
     <div class="hero-world" aria-label="Sculpted globe with international city landmarks">
       <div class="globe-scene">
-        <img class="globe-image" src="/assets/journey-clay-world.png" alt="" />
+        <img class="globe-image" src="/assets/journey-clay-world.webp" alt="" />
         <span class="hero-dog dog-sprite" class:visible={active === 'home'} aria-hidden="true"></span>
       </div>
     </div>
@@ -267,7 +267,7 @@
   <section class="story-section chapter" id="education" aria-labelledby="education-title" style="--chapter-tint:#f8eadb">
     <div class="chapter-scene" aria-hidden="true">
       <span class="scene-label">Stop 01 · Learn</span>
-      <img class="road-art" src="/assets/journey-clay-road.png" alt="" />
+      <img class="road-art" src="/assets/journey-clay-road.webp" alt="" />
       <span class="scene-dog dog-sprite" class:visible={active === 'education'}></span>
       <div class="polaroid polaroid-one"><div class="scene-fact"><strong>MSc</strong><span>Accounting, Finance &amp; Management</span></div><span class="polaroid-caption">Bristol · 2027</span></div>
       <div class="polaroid polaroid-two"><div class="scene-fact"><strong>9</strong><span>ACCA exams passed</span></div><span class="polaroid-caption">Nanjing · 2023</span></div>
@@ -290,7 +290,7 @@
   <section class="story-section chapter" id="work" aria-labelledby="work-title" style="--chapter-tint:#fff8ec">
     <div class="chapter-scene scene-reversed" aria-hidden="true">
       <span class="scene-label">Stop 02 · Grow</span>
-      <img class="road-art road-art-work" src="/assets/journey-clay-road.png" alt="" />
+      <img class="road-art road-art-work" src="/assets/journey-clay-road.webp" alt="" />
       <span class="scene-dog dog-sprite" class:visible={active === 'work'}></span>
       <div class="polaroid polaroid-one"><div class="scene-fact"><strong>£150k</strong><span>SEIS fundraising strategy</span></div><span class="polaroid-caption">Client consulting</span></div>
       <div class="polaroid polaroid-two"><div class="scene-fact"><strong>150+</strong><span>Page updates delivered</span></div><span class="polaroid-caption">Baozun · Shanghai</span></div>
@@ -312,7 +312,7 @@
   </section>
 
   <section class="story-section chapter" id="skills" aria-labelledby="skills-title" style="--chapter-tint:#eff4e8">
-    <div class="chapter-scene" aria-hidden="true"><span class="scene-label">Stop 03 · Shine</span><img class="road-art" src="/assets/journey-clay-road.png" alt="" /><span class="scene-dog dog-sprite" class:visible={active === 'skills'}></span><div class="polaroid polaroid-one"><div class="scene-fact"><strong>Excel</strong><span>VLOOKUP · Reconciliation</span></div><span class="polaroid-caption">Analysis &amp; reporting</span></div></div>
+    <div class="chapter-scene" aria-hidden="true"><span class="scene-label">Stop 03 · Shine</span><img class="road-art" src="/assets/journey-clay-road.webp" alt="" /><span class="scene-dog dog-sprite" class:visible={active === 'skills'}></span><div class="polaroid polaroid-one"><div class="scene-fact"><strong>Excel</strong><span>VLOOKUP · Reconciliation</span></div><span class="polaroid-caption">Analysis &amp; reporting</span></div></div>
     <div class="chapter-content">
       <header class="chapter-heading reveal"><div><span class="eyebrow">Stop 03 · What she brings</span><h2 id="skills-title">Skills &amp; Strengths</h2><p>Tax research, financial reporting, data analysis, and clear client communication.</p></div></header>
       <div class="road-stops">
@@ -325,7 +325,7 @@
   </section>
 
   <section class="story-section chapter" id="interests" aria-labelledby="interests-title" style="--chapter-tint:#fff0e8">
-    <div class="chapter-scene scene-reversed" aria-hidden="true"><span class="scene-label">Stop 04 · Lead</span><img class="road-art road-art-work" src="/assets/journey-clay-road.png" alt="" /><span class="scene-dog dog-sprite" class:visible={active === 'interests'}></span><div class="polaroid polaroid-one"><div class="scene-fact"><strong>1st</strong><span>Group production simulation</span></div><span class="polaroid-caption">Global finalist</span></div><div class="polaroid polaroid-two"><div class="scene-fact"><strong>Top 8</strong><span>2021 Huaxia Cup</span></div><span class="polaroid-caption">International debate</span></div></div>
+    <div class="chapter-scene scene-reversed" aria-hidden="true"><span class="scene-label">Stop 04 · Lead</span><img class="road-art road-art-work" src="/assets/journey-clay-road.webp" alt="" /><span class="scene-dog dog-sprite" class:visible={active === 'interests'}></span><div class="polaroid polaroid-one"><div class="scene-fact"><strong>1st</strong><span>Group production simulation</span></div><span class="polaroid-caption">Global finalist</span></div><div class="polaroid polaroid-two"><div class="scene-fact"><strong>Top 8</strong><span>2021 Huaxia Cup</span></div><span class="polaroid-caption">International debate</span></div></div>
     <div class="chapter-content">
       <header class="chapter-heading reveal"><div><span class="eyebrow">Stop 04 · Beyond formal study</span><h2 id="interests-title">Beyond Work</h2><p>Leadership, production strategy, and international debate alongside formal study.</p></div></header>
       <div class="activity-list">
@@ -338,7 +338,7 @@
   </section>
 
   <section class="story-section chapter" id="contact" aria-labelledby="contact-title" style="--chapter-tint:#f4e9dd">
-    <div class="chapter-scene" aria-hidden="true"><span class="scene-label">Final stop · Hello</span><img class="road-art" src="/assets/journey-clay-road.png" alt="" /><span class="scene-dog dog-sprite" class:visible={active === 'contact'}></span><div class="polaroid polaroid-one"><div class="scene-fact"><strong>UK / CN</strong><span>Bristol · Jiangsu</span></div><span class="polaroid-caption">Open to graduate tax roles</span></div><img class="contact-posting" src="/assets/contact-dog-posting.png" alt="" /></div>
+    <div class="chapter-scene" aria-hidden="true"><span class="scene-label">Final stop · Hello</span><img class="road-art" src="/assets/journey-clay-road.webp" alt="" /><span class="scene-dog dog-sprite" class:visible={active === 'contact'}></span><div class="polaroid polaroid-one"><div class="scene-fact"><strong>UK / CN</strong><span>Bristol · Jiangsu</span></div><span class="polaroid-caption">Open to graduate tax roles</span></div><img class="contact-posting" src="/assets/contact-dog-posting.webp" alt="" /></div>
     <div class="chapter-content">
       <header class="chapter-heading reveal"><div><span class="eyebrow">Final stop · Say hello</span><h2 id="contact-title">Let’s Connect</h2><p>Seeking a graduate tax role with structured training and a path towards complex advisory work.</p></div></header>
       <form class="paper-card contact-form reveal" onsubmit={sendMessage}>

@@ -25,6 +25,24 @@ test('production page loads every chapter and asset without browser errors', asy
   expect(failedResponses).toEqual([]);
 });
 
+test('artwork is served as compressed WebP', async ({ page }) => {
+  const artwork = {};
+  page.on('response', async (response) => {
+    const path = new URL(response.url()).pathname;
+    if (!path.startsWith('/assets/') || response.status() !== 200) return;
+    if (!/\.(webp|png|jpe?g|gif|svg)$/i.test(path)) return;
+    artwork[path] = (await response.body()).length;
+  });
+  await page.goto('/');
+  await page.waitForFunction(() => [...document.images].every((image) => image.complete && image.naturalWidth > 0));
+
+  const paths = Object.keys(artwork);
+  expect(paths.length).toBeGreaterThan(0);
+  for (const path of paths) expect(path).toMatch(/\.webp$/);
+  const total = Object.values(artwork).reduce((sum, bytes) => sum + bytes, 0);
+  expect(total).toBeLessThan(1.5 * 1024 * 1024);
+});
+
 test('CV buttons download the PDF with a clear filename', async ({ page }) => {
   await page.route('**/cv/Jiyan-Lu-CV.pdf', (route) => route.fulfill({
     status: 200,
@@ -45,7 +63,7 @@ test('CV buttons download the PDF with a clear filename', async ({ page }) => {
 
 test('contact scene uses the posting dog instead of the old stamp', async ({ page }) => {
   await page.goto('/#contact');
-  await expect(page.locator('#contact img[src="/assets/contact-dog-posting.png"]')).toBeVisible();
+  await expect(page.locator('#contact img[src="/assets/contact-dog-posting.webp"]')).toBeVisible();
   await expect(page.locator('#contact .scene-stamp')).toHaveCount(0);
 });
 
