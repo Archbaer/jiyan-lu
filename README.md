@@ -29,8 +29,9 @@ No backend. The build output is plain HTML, CSS, JS, and images.
 ```
 src/App.svelte      content and page structure
 src/portfolio.css   layout, scenes, and styling
-public/assets/      illustrations and sprites
+public/assets/      WebP illustrations and sprites (1.1 MB total)
 public/cv/          downloadable PDF
+public/og-image.jpg 1200×630 social preview card
 tests/              Playwright specs
 vercel.json         deployment and header configuration
 ```
@@ -40,6 +41,8 @@ vercel.json         deployment and header configuration
 - The contact form posts to a third-party form service. Its access key is supplied through the environment (`VITE_WEB3FORMS_ACCESS_KEY`) and is never committed.
 - Restrict that key to the production domain in the service dashboard before going live.
 - Deployment settings live in `vercel.json`; Node 22 is pinned through `.nvmrc`.
+- Shared links render a preview card from the `og:*` and `twitter:*` tags in `index.html`. Regenerate `public/og-image.jpg` from `docs/screenshots/desktop-home.jpg` if the hero changes.
+- Artwork is WebP; regeneration should keep each file under ~400 KB.
 
 ## Screenshots
 
