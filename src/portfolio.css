@@ -128,7 +128,7 @@ main { position: relative; z-index: 1; }
 .globe-image { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 20px 16px rgba(36,71,71,.18)); }
 .dog-sprite {
   display: block; aspect-ratio: 543 / 724;
-  background: url('/assets/journey-clay-dog-sprite.png') 0 0 / 400% 100% no-repeat;
+  background: url('/assets/journey-clay-dog-sprite.webp') 0 0 / 400% 100% no-repeat;
   opacity: 0; transition: opacity .25s ease;
 }
 .dog-sprite.visible { opacity: 1; }
@@ -159,7 +159,7 @@ main { position: relative; z-index: 1; }
   gap: clamp(30px, 5vw, 85px); align-items: start;
   min-height: min(100svh, 950px); padding: 72px clamp(30px, 5vw, 85px) 60px 3vw;
   background: linear-gradient(90deg, rgba(255,249,239,.05), rgba(255,250,242,.42) 54%, rgba(255,252,247,.8)),
-              url('/assets/journey-clay-meadow.jpg') center bottom / cover no-repeat, var(--chapter-tint);
+              url('/assets/journey-clay-meadow.webp') center bottom / cover no-repeat, var(--chapter-tint);
   border-top: 1px solid #eadfd0;
 }
 .story-section::after {
@@ -305,7 +305,7 @@ main { position: relative; z-index: 1; }
     border-top: 0;
     box-shadow: 0 -12px 28px rgba(74,58,39,.08);
     background-image: linear-gradient(90deg, transparent 0 43%, rgba(255,250,242,.42) 54%, rgba(255,252,247,.8)),
-                      url('/assets/journey-clay-road.png'), url('/assets/journey-clay-meadow.jpg');
+                      url('/assets/journey-clay-road.webp'), url('/assets/journey-clay-meadow.webp');
     background-size: auto, min(40vw, 590px) 114svh, cover;
     background-position: center, left 3vw top -7vh, center bottom;
     background-attachment: scroll, fixed, fixed;
@@ -368,7 +368,7 @@ main { position: relative; z-index: 1; }
   .floating-cloud { font-size: 50px; }.cloud-two { left: 5%; bottom: 11%; }
   .story-section {
     display: flex; flex-direction: column; gap: 0; padding: 76px 20px 38px;
-    background-image: linear-gradient(180deg, rgba(255,250,243,.43), rgba(255,250,243,.35)), url('/assets/journey-clay-meadow.jpg');
+    background-image: linear-gradient(180deg, rgba(255,250,243,.43), rgba(255,250,243,.35)), url('/assets/journey-clay-meadow.webp');
     background-position: center, 38% bottom;
   }
   .chapter-scene { position: relative; top: auto; align-self: center; width: min(100%, 480px); height: min(92vw, 420px); order: 2; margin: 5px auto 0; overflow: visible; }
